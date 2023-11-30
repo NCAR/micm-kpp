@@ -70,3 +70,4 @@ def parse_kpp_arrhenius(kpp_str, N_reactants=2):
         logging.error('unrecognized KPP Arrhenius syntax')
     logging.debug(arr_dict)
     return arr_dict
+

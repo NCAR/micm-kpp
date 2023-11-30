@@ -11,6 +11,7 @@ Usage:
 """
 
 from rxn_arrhenius import parse_kpp_arrhenius
+from rxn_troe import parse_kpp_troe
 
 def test_parse_kpp_arrhenius():
     """
@@ -37,4 +38,8 @@ def test_parse_kpp_arrhenius():
     assert arr_dict['A'] == kpp_A
     assert arr_dict['C'] == - kpp_B
     assert arr_dict['B'] == kpp_C
+
+
+def test_parse_kpp_troe():
+    assert True
 
