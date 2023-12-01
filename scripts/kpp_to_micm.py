@@ -38,12 +38,7 @@ from glob import glob
 
 from rxn_arrhenius import parse_kpp_arrhenius
 
-__version__ = 'v1.02'
-
-"""
-Physical Constants
-"""
-N_Avogadro = 6.02214076e23 
+__version__ = 'v1.03'
 
 
 def read_kpp_config(kpp_dir, kpp_name):
