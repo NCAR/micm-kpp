@@ -20,8 +20,18 @@ def parse_kpp_troe(kpp_str, N_reactants=2):
     Returns
         (dict): MICM Troe reaction coefficients
 
-    Troe formula from KPP
+
+    Troe formulas from WRF-KPP
     ---------------------
+    TROE(k0, n, kinf, m, T, [M])
+    k0    low pressure limit at 300 K
+    n     low pressure exponent
+    kinf  high pressure limit at 300 K
+    m     high pressure exponent
+    T     temperature [K]
+    [M]   air concentration [molecules cm-3]
+    TROEE(A, B, k0, n, kinf, m, T, [M])
+    TROEE = A * exp(- B / T) * TROE
 
     Troe formula from MICM
     ----------------------

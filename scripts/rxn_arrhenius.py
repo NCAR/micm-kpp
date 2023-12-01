@@ -22,21 +22,10 @@ def parse_kpp_arrhenius(kpp_str, N_reactants=2):
 
     Arrhenius formula from KPP
     --------------------------
-
-    KPP_REAL ARR_abc( float A0, float B0, float C0 )
-    {
-      double ARR_RES;
-
-      ARR_RES = (double)A0
-        * exp( -(double)B0/TEMP )
-        * pow( (TEMP/300.0), (double)C0 );
-
-    return (KPP_REAL)ARR_RES;
-    }
+    ARR_abc = A * exp(- B / T) * (T / 300)^C
 
     Arrhenius formula from MICM
     ---------------------------
-
     return parameters_.A_ * std::exp(parameters_.C_ / temperature)
       * pow(temperature / parameters_.D_, parameters_.B_) *
       (1.0 + parameters_.E_ * pressure);
