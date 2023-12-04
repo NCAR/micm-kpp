@@ -13,8 +13,8 @@ def parse_coeffs(kpp_str):
 
     logging.debug(kpp_str)
 
-    coeffs = [float(coeff.replace(' ', '')) for coeff in
-        kpp_str.split('(')[1].split(')')[0].split(',')]
+    coeffs = [float(coeff.replace(' ', '').replace('_dp', '').replace('D', 'E'))
+        for coeff in kpp_str.split('(')[1].split(')')[0].split(',')]
 
     logging.debug(coeffs)
 
