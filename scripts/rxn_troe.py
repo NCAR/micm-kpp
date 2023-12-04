@@ -9,6 +9,8 @@ File:
 
 import logging
 
+from parse_kpp_utils import parse_coeffs
+
 def parse_kpp_troe(kpp_str, N_reactants=2):
     """
     Parse KPP Troe reaction
@@ -61,10 +63,8 @@ def parse_kpp_troe(kpp_str, N_reactants=2):
     kinf_B = - ninf
     """
 
-    logging.debug(kpp_str)
-    coeffs = [float(coeff.replace(' ', '')) for coeff in
-        kpp_str.split('(')[1].split(')')[0].split(',')]
-    logging.debug(coeffs)
+    coeffs = parse_coeffs(kpp_str)
+
     troe_dict = dict()
     troe_dict['type'] = 'TROE'
 

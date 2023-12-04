@@ -18,3 +18,5 @@ def parse_coeffs(kpp_str):
 
     logging.debug(coeffs)
 
+    return coeffs
+

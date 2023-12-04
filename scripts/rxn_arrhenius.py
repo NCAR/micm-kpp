@@ -9,6 +9,8 @@ File:
 
 import logging
 
+from parse_kpp_utils import parse_coeffs
+
 def parse_kpp_arrhenius(kpp_str, N_reactants=2):
     """
     Parse KPP Arrhenius reaction
@@ -31,10 +33,8 @@ def parse_kpp_arrhenius(kpp_str, N_reactants=2):
       (1.0 + parameters_.E_ * pressure);
     """
 
-    logging.debug(kpp_str)
-    coeffs = [float(coeff.replace(' ', '')) for coeff in
-        kpp_str.split('(')[1].split(')')[0].split(',')]
-    logging.debug(coeffs)
+    coeffs = parse_coeffs(kpp_str)
+
     arr_dict = dict()
     arr_dict['type'] = 'ARRHENIUS'
     # note the interchange of B and C, and change of sign
