@@ -60,10 +60,17 @@ def test_parse_kpp_troe():
         = 1.0, 2000.0, 3.0e-11, 4, 5.0e-12, 6
     kpp_T, kpp_n_M = 300.0, 2.0e19
 
-    arr_dict = parse_kpp_troe(
+    troe_dict = parse_kpp_troe(
         'TROEE(%.2f, %.2f, %.2e, %.2f, %.2e, %.2f, %.2f, %.2e)'
         % (kpp_A, kpp_B, kpp_k0, kpp_n0, kpp_kinf, kpp_ninf,
            kpp_T, kpp_n_M))
 
-    assert True
+    assert troe_dict['k0_A']   == kpp_A * kpp_k0
+    assert troe_dict['k0_B']   == - kpp_n0
+    assert troe_dict['k0_C']   == - kpp_B
+    assert troe_dict['kinf_A'] == kpp_kinf
+    assert troe_dict['kinf_B'] == - kpp_ninf
+    assert troe_dict['kinf_C'] == 0.0
+    assert troe_dict['Fc']     == 0.6
+    assert troe_dict['N']      == 1.0
 

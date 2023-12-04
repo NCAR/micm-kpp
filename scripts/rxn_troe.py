@@ -65,32 +65,32 @@ def parse_kpp_troe(kpp_str, N_reactants=2):
     coeffs = [float(coeff.replace(' ', '')) for coeff in
         kpp_str.split('(')[1].split(')')[0].split(',')]
     logging.debug(coeffs)
-    arr_dict = dict()
-    arr_dict['type'] = 'TROE'
+    troe_dict = dict()
+    troe_dict['type'] = 'TROE'
 
     if ('TROEE' in kpp_str):
         # TROEE(A, B, k0, n0, kinf, ninf, T, [M])
-        arr_dict['k0_A']   = coeffs[0] * coeffs[2]
-        arr_dict['k0_B']   = - coeffs[3]
-        arr_dict['k0_C']   = - coeffs[1]
-        arr_dict['kinf_A'] = coeffs[4]
-        arr_dict['kinf_B'] = - coeffs[5]
-        arr_dict['kinf_C'] = 0.0
-        arr_dict['Fc']     = 0.6
-        arr_dict['N']      = 1.0
+        troe_dict['k0_A']   = coeffs[0] * coeffs[2]
+        troe_dict['k0_B']   = - coeffs[3]
+        troe_dict['k0_C']   = - coeffs[1]
+        troe_dict['kinf_A'] = coeffs[4]
+        troe_dict['kinf_B'] = - coeffs[5]
+        troe_dict['kinf_C'] = 0.0
+        troe_dict['Fc']     = 0.6
+        troe_dict['N']      = 1.0
     elif ('TROE' in kpp_str):
         # TROE(k0, n0, kinf, ninf, T, [M])
-        arr_dict['k0_A']   = coeffs[0]
-        arr_dict['k0_B']   = - coeffs[1]
-        arr_dict['k0_C']   = 0.0
-        arr_dict['kinf_A'] = coeffs[2]
-        arr_dict['kinf_B'] = - coeffs[3]
-        arr_dict['kinf_C'] = 0.0
-        arr_dict['Fc']     = 0.6
-        arr_dict['N']      = 1.0
+        troe_dict['k0_A']   = coeffs[0]
+        troe_dict['k0_B']   = - coeffs[1]
+        troe_dict['k0_C']   = 0.0
+        troe_dict['kinf_A'] = coeffs[2]
+        troe_dict['kinf_B'] = - coeffs[3]
+        troe_dict['kinf_C'] = 0.0
+        troe_dict['Fc']     = 0.6
+        troe_dict['N']      = 1.0
     else:
         logging.error('unrecognized KPP Troe syntax')
 
-    logging.debug(arr_dict)
-    return arr_dict
+    logging.debug(troe_dict)
+    return troe_dict
 
