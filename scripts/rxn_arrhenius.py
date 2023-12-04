@@ -39,12 +39,12 @@ def parse_kpp_arrhenius(kpp_str, N_reactants=2):
     arr_dict['type'] = 'ARRHENIUS'
     # note the interchange of B and C, and change of sign
     # in the KPP and MICM conventions
-    if ('_abc(' in kpp_str):
+    if ('ARR(' in kpp_str or '_abc(' in kpp_str):
         arr_dict['A'] = coeffs[0]
         arr_dict['B'] = coeffs[2]
         arr_dict['C'] = - coeffs[1]
         arr_dict['D'] = 300.0
-    elif ('_ab(' in kpp_str):
+    elif ('ARR2(' in kpp_str or '_ab(' in kpp_str):
         arr_dict['A'] = coeffs[0]
         arr_dict['C'] = - coeffs[1]
         arr_dict['D'] = 300.0
