@@ -15,10 +15,11 @@ from rxn_troe import parse_kpp_troe
 
 def test_parse_kpp_arrhenius():
     """
-    examples
-    ARR_ab(1.0e-12, 2000.0)
-    ARR_ac(1.0e-12, -3.0)
-    ARR_abc(1.0e-12, 2000.0, -3.0)
+    ARR_ab(A, B)
+    ARR2(A, B)
+    ARR_ac(A, C)
+    ARR_abc(A, B, C)
+    ARR(A, B, C)
     """
 
     kpp_A, kpp_B, kpp_C = 1.0e-12, 2000.0, -3.0
@@ -52,5 +53,17 @@ def test_parse_kpp_arrhenius():
 
 
 def test_parse_kpp_troe():
+    """
+    TROEE(A, B, k0, n0, kinf, ninf, T, [M])
+    """
+    kpp_A, kpp_B, kpp_k0, kpp_n0, kpp_kinf, kpp_ninf \
+        = 1.0, 2000.0, 3.0e-11, 4, 5.0e-12, 6
+    kpp_T, kpp_n_M = 300.0, 2.0e19
+
+    arr_dict = parse_kpp_troe(
+        'TROEE(%.2f, %.2f, %.2e, %.2f, %.2e, %.2f, %.2f, %.2e)'
+        % (kpp_A, kpp_B, kpp_k0, kpp_n0, kpp_kinf, kpp_ninf,
+           kpp_T, kpp_n_M))
+
     assert True
 
