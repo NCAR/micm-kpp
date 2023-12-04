@@ -70,15 +70,15 @@ def parse_kpp_troe(kpp_str, N_reactants=2):
 
     if ('TROEE' in kpp_str):
         # TROEE(A, B, k0, n0, kinf, ninf, T, [M])
-        arr_dict['k0_A'] = coeff[0] * coeff[2]
-        arr_dict['k0_B'] = - coeff[3]
-        arr_dict['k0_C'] = - coeff[1]
+        arr_dict['k0_A']   = coeff[0] * coeff[2]
+        arr_dict['k0_B']   = - coeff[3]
+        arr_dict['k0_C']   = - coeff[1]
         arr_dict['kinf_A'] = coeff[4]
         arr_dict['kinf_B'] = - coeff[5]
     elif ('TROE' in kpp_str):
         # TROE(k0, n0, kinf, ninf, T, [M])
-        arr_dict['k0_A'] = coeff[0]
-        arr_dict['k0_B'] = - coeff[1]
+        arr_dict['k0_A']   = coeff[0]
+        arr_dict['k0_B']   = - coeff[1]
         arr_dict['kinf_A'] = coeff[2]
         arr_dict['kinf_B'] = - coeff[3]
     else:

@@ -29,12 +29,23 @@ def test_parse_kpp_arrhenius():
     assert arr_dict['C'] == - kpp_B
 
     arr_dict = parse_kpp_arrhenius(
+        'ARR2(%.2e, %.2f)' % (kpp_A, kpp_B))
+    assert arr_dict['A'] == kpp_A
+    assert arr_dict['C'] == - kpp_B
+
+    arr_dict = parse_kpp_arrhenius(
         'ARR_ac(%.2e, %.2f)' % (kpp_A, kpp_C))
     assert arr_dict['A'] == kpp_A
     assert arr_dict['B'] == kpp_C
 
     arr_dict = parse_kpp_arrhenius(
         'ARR_abc(%.2e, %.2f, %.2f)' % (kpp_A, kpp_B, kpp_C))
+    assert arr_dict['A'] == kpp_A
+    assert arr_dict['C'] == - kpp_B
+    assert arr_dict['B'] == kpp_C
+
+    arr_dict = parse_kpp_arrhenius(
+        'ARR(%.2e, %.2f, %.2f)' % (kpp_A, kpp_B, kpp_C))
     assert arr_dict['A'] == kpp_A
     assert arr_dict['C'] == - kpp_B
     assert arr_dict['B'] == kpp_C
