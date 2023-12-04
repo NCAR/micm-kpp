@@ -37,8 +37,9 @@ import json
 from glob import glob
 
 from rxn_arrhenius import parse_kpp_arrhenius
+from rxn_troe import parse_kpp_troe
 
-__version__ = 'v1.03'
+__version__ = 'v1.04'
 
 
 def read_kpp_config(kpp_dir, kpp_name):
@@ -170,6 +171,9 @@ def micm_equation_json(lines):
             equation_dict['type'] = 'PHOTOLYSIS'
         elif 'ARR' in coeffs:
             equation_dict = parse_kpp_arrhenius(coeffs,
+                N_reactants=N_reactants)
+        elif 'TROE' in coeffs:
+            equation_dict = parse_kpp_troe(coeffs,
                 N_reactants=N_reactants)
         else:
             # default to Arrhenius with a single coefficient
