@@ -36,7 +36,7 @@ def parse_kpp_arrhenius(kpp_str, N_reactants=2):
         kpp_str.split('(')[1].split(')')[0].split(',')]
     logging.debug(coeffs)
     arr_dict = dict()
-    arr_dict['type'] = 'ARRHENIUS' 
+    arr_dict['type'] = 'ARRHENIUS'
     # note the interchange of B and C, and change of sign
     # in the KPP and MICM conventions
     if ('_abc(' in kpp_str):

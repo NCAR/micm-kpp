@@ -56,10 +56,34 @@ def parse_kpp_troe(kpp_str, N_reactants=2):
     MICM     KPP
     k0_A   = A * k0
     k0_B   = - n0
+    k0_C   = - B
     kinf_A = kinf
     kinf_B = - ninf
-    kinf_C = - B
     """
 
     logging.debug(kpp_str)
+    coeffs = [float(coeff.replace(' ', '')) for coeff in
+        kpp_str.split('(')[1].split(')')[0].split(',')]
+    logging.debug(coeffs)
+    arr_dict = dict()
+    arr_dict['type'] = 'TROE'
+
+    if ('TROEE' in kpp_str):
+        # TROEE(A, B, k0, n0, kinf, ninf, T, [M])
+        arr_dict['k0_A'] = coeff[0] * coeff[2]
+        arr_dict['k0_B'] = - coeff[3]
+        arr_dict['k0_C'] = - coeff[1]
+        arr_dict['kinf_A'] = coeff[4]
+        arr_dict['kinf_B'] = - coeff[5]
+    elif ('TROE' in kpp_str):
+        # TROE(k0, n0, kinf, ninf, T, [M])
+        arr_dict['k0_A'] = coeff[0]
+        arr_dict['k0_B'] = - coeff[1]
+        arr_dict['kinf_A'] = coeff[2]
+        arr_dict['kinf_B'] = - coeff[3]
+    else:
+        logging.error('unrecognized KPP Troe syntax')
+
+    logging.debug(arr_dict)
+    return arr_dict
 
