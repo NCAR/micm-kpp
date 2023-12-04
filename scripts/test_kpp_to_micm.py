@@ -55,6 +55,7 @@ def test_parse_kpp_arrhenius():
 def test_parse_kpp_troe():
     """
     TROEE(A, B, k0, n0, kinf, ninf, T, [M])
+    TROE(k0, n0, kinf, ninf, T, [M])
     """
     kpp_A, kpp_B, kpp_k0, kpp_n0, kpp_kinf, kpp_ninf \
         = 1.0, 2000.0, 3.0e-11, 4, 5.0e-12, 6
@@ -68,6 +69,20 @@ def test_parse_kpp_troe():
     assert troe_dict['k0_A']   == kpp_A * kpp_k0
     assert troe_dict['k0_B']   == - kpp_n0
     assert troe_dict['k0_C']   == - kpp_B
+    assert troe_dict['kinf_A'] == kpp_kinf
+    assert troe_dict['kinf_B'] == - kpp_ninf
+    assert troe_dict['kinf_C'] == 0.0
+    assert troe_dict['Fc']     == 0.6
+    assert troe_dict['N']      == 1.0
+
+    troe_dict = parse_kpp_troe(
+        'TROE(%.2e, %.2f, %.2e, %.2f, %.2f, %.2e)'
+        % (kpp_k0, kpp_n0, kpp_kinf, kpp_ninf,
+           kpp_T, kpp_n_M))
+
+    assert troe_dict['k0_A']   == kpp_k0
+    assert troe_dict['k0_B']   == - kpp_n0
+    assert troe_dict['k0_C']   == 0.0
     assert troe_dict['kinf_A'] == kpp_kinf
     assert troe_dict['kinf_B'] == - kpp_ninf
     assert troe_dict['kinf_C'] == 0.0
