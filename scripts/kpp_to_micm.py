@@ -27,11 +27,6 @@ TODO:
     with more than one digit.
     (2) Add pytest unit test for method micm_equation_json.
     (3+) Add support for many more reaction types ...
-
-Revision History:
-    v1.00 2023/08/03 Initial implementation
-    v1.01 2023/08/16 Added method parse_kpp_arrhenius
-    v1.02 2023/10/05 Added unit conversion option
 """
 
 import os
@@ -41,12 +36,10 @@ import logging
 import json
 from glob import glob
 
-__version__ = 'v1.02'
+from rxn_arrhenius import parse_kpp_arrhenius
+from rxn_troe import parse_kpp_troe
 
-"""
-Physical Constants
-"""
-N_Avogadro = 6.02214076e23 
+__version__ = 'v1.04'
 
 
 def read_kpp_config(kpp_dir, kpp_name):
@@ -135,83 +128,12 @@ def micm_species_json(lines, fixed=False, tolerance=1.0e-12):
     return species_json
 
 
-def parse_kpp_arrhenius(kpp_str, to_si_units=False,
-    N_reactants=2):
-    """
-    Parse KPP Arrhenius reaction
-
-    Parameters
-        (str) kpp_str: Arrhenius reaction string
-        (bool) to_si_units: convert A coefficient
-        from (cm^3 molecule-1)^(N-1) s-1 to (m^3 mol-1)^(N-1) s-1
-        where N is the number of reactants
-        (int) N_reactants: number of reactants
-
-    Returns
-        (dict): MICM Arrhenius reaction coefficients
-
-    Arrhenius formula from KPP
-    --------------------------
-
-    KPP_REAL ARR_abc( float A0, float B0, float C0 )
-    {
-      double ARR_RES;
-
-      ARR_RES = (double)A0
-        * exp( -(double)B0/TEMP )
-        * pow( (TEMP/300.0), (double)C0 );
-
-    return (KPP_REAL)ARR_RES;
-    }
-
-    Arrhenius formula from MICM
-    ---------------------------
-
-    inline double ArrheniusRateConstant::calculate(
-      const double& temperature, const double& pressure) const
-    {
-    return parameters_.A_ * std::exp(parameters_.C_ / temperature)
-      * pow(temperature / parameters_.D_, parameters_.B_) *
-      (1.0 + parameters_.E_ * pressure);
-    }
-    """
-    logging.debug(kpp_str)
-    coeffs = [float(coeff.replace(' ', '')) for coeff in
-        kpp_str.split('(')[1].split(')')[0].split(',')]
-    logging.debug(coeffs)
-    arr_dict = dict()
-    arr_dict['type'] = 'ARRHENIUS' 
-    # note the interchange of B and C, and change of sign
-    # in the KPP and MICM conventions
-    if ('_abc(' in kpp_str):
-        arr_dict['A'] = coeffs[0]
-        arr_dict['B'] = coeffs[2]
-        arr_dict['C'] = - coeffs[1]
-        arr_dict['D'] = 300.0
-    elif ('_ab(' in kpp_str):
-        arr_dict['A'] = coeffs[0]
-        arr_dict['C'] = - coeffs[1]
-        arr_dict['D'] = 300.0
-    elif ('_ac(' in kpp_str):
-        arr_dict['A'] = coeffs[0]
-        arr_dict['B'] = coeffs[1]
-        arr_dict['D'] = 300.0
-    else:
-        logging.error('unrecognized KPP Arrhenius syntax')
-    if to_si_units:
-        arr_dict['A'] *= (N_Avogadro * 1.0e-6)**(N_reactants - 1)
-    logging.debug(arr_dict)
-    return arr_dict
-
-
-def micm_equation_json(lines, to_si_units=False):
+def micm_equation_json(lines):
     """
     Generate MICM equation JSON
 
     Parameters
         (list of str) lines: lines of equation section
-        (bool) to_si_units: convert A coefficient
-        from cm^3 molecule-1 s-1 to m^3 mol-1 s-1
 
     Returns
         (list of dict): list of MICM equation entries
@@ -249,14 +171,15 @@ def micm_equation_json(lines, to_si_units=False):
             equation_dict['type'] = 'PHOTOLYSIS'
         elif 'ARR' in coeffs:
             equation_dict = parse_kpp_arrhenius(coeffs,
-                to_si_units=to_si_units, N_reactants=N_reactants)
+                N_reactants=N_reactants)
+        elif 'TROE' in coeffs:
+            equation_dict = parse_kpp_troe(coeffs,
+                N_reactants=N_reactants)
         else:
             # default to Arrhenius with a single coefficient
             coeffs = coeffs.replace('(', '').replace(')', '')
             equation_dict['type'] = 'ARRHENIUS'
             equation_dict['A'] = float(coeffs)
-            if to_si_units:
-                equation_dict['A'] *= (N_Avogadro * 1.0e-6)**(N_reactants - 1)
 
         equation_dict['reactants'] = dict()
         equation_dict['products'] = dict()
@@ -305,9 +228,6 @@ if __name__ == '__main__':
     parser.add_argument('--mechanism', type=str,
         default='Chapman',
         help='mechanism name')
-    parser.add_argument('--to_si_units', action='store_true',
-        default=False,
-        help='convert units from molecules cm-3 to mol m-3')
     parser.add_argument('--debug', action='store_true',
         help='set logging level to debug')
     args = parser.parse_args()
@@ -346,8 +266,7 @@ if __name__ == '__main__':
     """
     Generate MICM equations JSON from KPP #EQUATIONS section
     """
-    equations_json = micm_equation_json(sections['#EQUATIONS'],
-        to_si_units=args.to_si_units)
+    equations_json = micm_equation_json(sections['#EQUATIONS'])
 
     """
     Assemble MICM species JSON
