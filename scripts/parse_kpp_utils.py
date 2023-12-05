@@ -9,6 +9,14 @@ File:
 
 import logging
 
+
+def is_float(string):
+    try:
+        float(string)
+        return True
+    except ValueError:
+        return False
+
 def parse_coeffs(kpp_str):
 
     logging.debug(kpp_str)
@@ -18,8 +26,11 @@ def parse_coeffs(kpp_str):
     coeffs = list()
 
     for coeff_str in coeff_strs:
-        coeffs.append(
-            float(coeff_str.replace(' ', '').replace('_dp', '').replace('D', 'E')))
+        coeff_str_reform \
+            = coeff_str.replace(' ', '').replace('_dp', '').replace('D', 'E')
+        if (is_float(coeff_str_reform)):
+            coeffs.append(float(coeff_str_reform))
+        # coeffs.append(float(coeff_str_reform))
 
     logging.debug(coeffs)
 
