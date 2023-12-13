@@ -38,6 +38,7 @@ from glob import glob
 
 from rxn_arrhenius import parse_kpp_arrhenius
 from rxn_troe import parse_kpp_troe
+from rxn_special import parse_kpp_k45
 
 __version__ = 'v1.04'
 
@@ -166,6 +167,7 @@ def micm_equation_json(lines):
         N_reactants = len(reactants)
 
         equation_dict = dict()
+        equation_second_dict = dict()
 
         if 'SUN' in coeffs:
             equation_dict['type'] = 'PHOTOLYSIS'
@@ -175,6 +177,8 @@ def micm_equation_json(lines):
         elif 'TROE' in coeffs:
             equation_dict = parse_kpp_troe(coeffs,
                 N_reactants=N_reactants)
+        elif 'k45' in coeffs:
+            equation_dict, equation_second_dict = parse_kpp_k45(coeffs)
         else:
             # default to Arrhenius with a single coefficient
             coeffs = coeffs.replace('(', '').replace(')', '')
