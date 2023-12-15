@@ -38,9 +38,9 @@ from glob import glob
 
 from rxn_arrhenius import parse_kpp_arrhenius
 from rxn_troe import parse_kpp_troe
-from rxn_special import parse_kpp_k45
+from rxn_special import parse_kpp_k45, parse_kpp_k57
 
-__version__ = 'v1.04'
+__version__ = 'v1.05'
 
 
 def read_kpp_config(kpp_dir, kpp_name):
@@ -179,6 +179,8 @@ def micm_equation_json(lines):
                 N_reactants=N_reactants)
         elif 'k45' in coeffs:
             equation_dict, equation_second_dict = parse_kpp_k45(coeffs)
+        elif 'k57' in coeffs:
+            equation_dict, equation_second_dict = parse_kpp_k57(coeffs)
         else:
             # default to Arrhenius with a single coefficient
             coeffs = coeffs.replace('(', '').replace(')', '')
@@ -219,8 +221,8 @@ def micm_equation_json(lines):
                     equation_second_dict['products'][product] = dict()
 
         if equation_second_dict is not None:
-            equation_dict['MUSICA name'] = label + '_1'
-            equation_second_dict['MUSICA name'] = label + '_2'
+            equation_dict['MUSICA name'] = label + '_first_term'
+            equation_second_dict['MUSICA name'] = label + '_second_term'
         else:
             equation_dict['MUSICA name'] = label
 
