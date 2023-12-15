@@ -57,3 +57,29 @@ def parse_kpp_k45(kpp_str):
     logging.debug(troe_dict)
     return arr_dict, troe_dict
 
+
+def parse_kpp_k57(kpp_str):
+    """
+    Parse KPP RACM k57 reaction
+
+    Parameters
+        (str) kpp_str: k57 reaction string
+
+    Returns
+        (tuple of dict): two dicts of MICM Troe reaction coefficients
+
+
+    k57 formula from WRF-KPP
+    ------------------------
+    k57(T, [M])
+    """
+    coeffs = parse_coeffs(kpp_str)
+
+    troe_dict = dict()
+    troe_dict['type'] = 'TROE'
+
+    troe_second_dict = dict()
+    troe_second_dict['type'] = 'TROE'
+
+    return troe_dict, troe_second_dict
+
