@@ -12,7 +12,7 @@ Usage:
 
 from rxn_arrhenius import parse_kpp_arrhenius
 from rxn_troe import parse_kpp_troe
-from rxn_special import parse_kpp_k45
+from rxn_special import parse_kpp_k45, parse_kpp_k57
 
 def test_parse_kpp_arrhenius():
     """
@@ -109,4 +109,12 @@ def test_parse_kpp_45():
     assert troe_dict['kinf_C'] == 2199.0
     assert troe_dict['Fc']     == 1.0
     assert troe_dict['N']      == 0.0
+
+
+def test_parse_kpp_57():
+
+    kpp_T, kpp_n_M = 300.0, 2.0e19
+
+    arr_dict, troe_dict = parse_kpp_k57(
+        'k57(%.2f, %.2e)' % (kpp_T, kpp_n_M))
 
