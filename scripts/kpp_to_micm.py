@@ -247,7 +247,7 @@ if __name__ == '__main__':
         default=os.path.join('..', 'configs', 'kpp'),
         help='KPP input config directory')
     parser.add_argument('--kpp_name', type=str,
-        default='small_strato',
+        default='test',
         help='KPP config name')
     parser.add_argument('--micm_dir', type=str,
         default=os.path.join('..', 'configs', 'micm'),
