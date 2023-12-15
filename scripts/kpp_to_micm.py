@@ -167,7 +167,7 @@ def micm_equation_json(lines):
         N_reactants = len(reactants)
 
         equation_dict = dict()
-        equation_second_dict = dict()
+        equation_second_dict = None
 
         if 'SUN' in coeffs:
             equation_dict['type'] = 'PHOTOLYSIS'
@@ -188,25 +188,46 @@ def micm_equation_json(lines):
         equation_dict['reactants'] = dict()
         equation_dict['products'] = dict()
 
+        if equation_second_dict is not None:
+            equation_second_dict['reactants'] = dict()
+            equation_second_dict['products'] = dict()
+
         for reactant in reactants:
             if reactant[0].isdigit():
                 equation_dict['reactants'][reactant[1:]] \
                     = {'qty': float(reactant[0])}
+                if equation_second_dict is not None:
+                    equation_second_dict['reactants'][reactant[1:]] \
+                        = {'qty': float(reactant[0])}
             elif 'hv' in reactant:
                 pass
             else:
                 equation_dict['reactants'][reactant] = dict()
+                if equation_second_dict is not None:
+                    equation_second_dict['reactants'][reactant] = dict()
 
         for product in products:
             if product[0].isdigit():
                 equation_dict['products'][product[1:]] \
                     = {'yield': float(product[0])}
+                if equation_second_dict is not None:
+                    equation_second_dict['products'][product[1:]] \
+                        = {'yield': float(product[0])}
             else:
                 equation_dict['products'][product] = dict()
+                if equation_second_dict is not None:
+                    equation_second_dict['products'][product] = dict()
 
-        equation_dict['MUSICA name'] = label
+        if equation_second_dict is not None:
+            equation_dict['MUSICA name'] = label + '_1'
+            equation_second_dict['MUSICA name'] = label + '_2'
+        else:
+            equation_dict['MUSICA name'] = label
 
         equations.append(equation_dict)
+
+        if equation_second_dict is not None:
+            equations.append(equation_second_dict)
 
     return equations
 
