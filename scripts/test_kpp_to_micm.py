@@ -25,32 +25,32 @@ def test_parse_kpp_arrhenius():
 
     kpp_A, kpp_B, kpp_C = 1.0e-12, 2000.0, -3.0
 
-    arr_dict = parse_kpp_arrhenius(
+    arrhenius_dict = parse_kpp_arrhenius(
         'ARR_ab(%.2e, %.2f)' % (kpp_A, kpp_B))
-    assert arr_dict['A'] == kpp_A
-    assert arr_dict['C'] == - kpp_B
+    assert arrhenius_dict['A'] == kpp_A
+    assert arrhenius_dict['C'] == - kpp_B
 
-    arr_dict = parse_kpp_arrhenius(
+    arrhenius_dict = parse_kpp_arrhenius(
         'ARR2(%.2e, %.2f)' % (kpp_A, kpp_B))
-    assert arr_dict['A'] == kpp_A
-    assert arr_dict['C'] == - kpp_B
+    assert arrhenius_dict['A'] == kpp_A
+    assert arrhenius_dict['C'] == - kpp_B
 
-    arr_dict = parse_kpp_arrhenius(
+    arrhenius_dict = parse_kpp_arrhenius(
         'ARR_ac(%.2e, %.2f)' % (kpp_A, kpp_C))
-    assert arr_dict['A'] == kpp_A
-    assert arr_dict['B'] == kpp_C
+    assert arrhenius_dict['A'] == kpp_A
+    assert arrhenius_dict['B'] == kpp_C
 
-    arr_dict = parse_kpp_arrhenius(
+    arrhenius_dict = parse_kpp_arrhenius(
         'ARR_abc(%.2e, %.2f, %.2f)' % (kpp_A, kpp_B, kpp_C))
-    assert arr_dict['A'] == kpp_A
-    assert arr_dict['C'] == - kpp_B
-    assert arr_dict['B'] == kpp_C
+    assert arrhenius_dict['A'] == kpp_A
+    assert arrhenius_dict['C'] == - kpp_B
+    assert arrhenius_dict['B'] == kpp_C
 
-    arr_dict = parse_kpp_arrhenius(
+    arrhenius_dict = parse_kpp_arrhenius(
         'ARR(%.2e, %.2f, %.2f)' % (kpp_A, kpp_B, kpp_C))
-    assert arr_dict['A'] == kpp_A
-    assert arr_dict['C'] == - kpp_B
-    assert arr_dict['B'] == kpp_C
+    assert arrhenius_dict['A'] == kpp_A
+    assert arrhenius_dict['C'] == - kpp_B
+    assert arrhenius_dict['B'] == kpp_C
 
 
 def test_parse_kpp_troe():
@@ -95,12 +95,12 @@ def test_parse_kpp_45():
 
     kpp_T, kpp_n_M = 300.0, 2.0e19
 
-    arr_dict, troe_dict = parse_kpp_k45(
+    arrhenius_dict, troe_dict = parse_kpp_k45(
         'k45(%.2f, %.2e)' % (kpp_T, kpp_n_M))
 
-    assert arr_dict['A']       == 2.4e-14
-    assert arr_dict['B']       == 0.0
-    assert arr_dict['C']       == 460.0
+    assert arrhenius_dict['A'] == 2.4e-14
+    assert arrhenius_dict['B'] == 0.0
+    assert arrhenius_dict['C'] == 460.0
     assert troe_dict['k0_A']   == 6.5e-34
     assert troe_dict['k0_B']   == 0.0
     assert troe_dict['k0_C']   == 1335.0
@@ -115,6 +115,23 @@ def test_parse_kpp_57():
 
     kpp_T, kpp_n_M = 300.0, 2.0e19
 
-    arr_dict, troe_dict = parse_kpp_k57(
+    troe_dict, ternary_dict = parse_kpp_k57(
         'k57(%.2f, %.2e)' % (kpp_T, kpp_n_M))
+
+    assert troe_dict['k0_A']      == 5.9e-33
+    assert troe_dict['k0_B']      == - 1.4
+    assert troe_dict['k0_C']      == 0.0
+    assert troe_dict['kinf_A']    == 1.1e-12
+    assert troe_dict['kinf_B']    == 1.3
+    assert troe_dict['kinf_C']    == 0.0
+    assert troe_dict['Fc']        == 0.6
+    assert troe_dict['N']         == 1.0
+    assert ternary_dict['k0_A']   == 1.5e-13
+    assert ternary_dict['k0_B']   == 0.6
+    assert ternary_dict['k0_C']   == 0.0
+    assert ternary_dict['kinf_A'] == 2.9e9
+    assert ternary_dict['kinf_B'] == 6.1
+    assert ternary_dict['kinf_C'] == 0.0
+    assert ternary_dict['Fc']     == 0.6
+    assert ternary_dict['N']      == 1.0
 
