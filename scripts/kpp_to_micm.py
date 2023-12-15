@@ -253,7 +253,7 @@ if __name__ == '__main__':
         default=os.path.join('..', 'configs', 'micm'),
         help='MICM output species config file')
     parser.add_argument('--mechanism', type=str,
-        default='Chapman',
+        default='test',
         help='mechanism name')
     parser.add_argument('--debug', action='store_true',
         help='set logging level to debug')
