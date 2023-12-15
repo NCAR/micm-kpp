@@ -33,16 +33,16 @@ def parse_kpp_k45(kpp_str):
 
     coeffs = parse_coeffs(kpp_str)
 
-    arr_dict = dict()
-    arr_dict['type'] = 'ARRHENIUS'
+    arrhenius_dict = dict()
+    arrhenius_dict['type'] = 'ARRHENIUS'
 
     troe_dict = dict()
     troe_dict['type'] = 'TROE'
 
     if ('k45' in kpp_str):
-        arr_dict['A']       = 2.4e-14
-        arr_dict['B']       = 0.0
-        arr_dict['C']       = 460.0
+        arrhenius_dict['A'] = 2.4e-14
+        arrhenius_dict['B'] = 0.0
+        arrhenius_dict['C'] = 460.0
         troe_dict['k0_A']   = 6.5e-34
         troe_dict['k0_B']   = 0.0
         troe_dict['k0_C']   = 1335.0
@@ -54,8 +54,10 @@ def parse_kpp_k45(kpp_str):
     else:
         logging.error('unrecognized KPP k45 syntax')
 
+    logging.debug(arrhenius_dict)
     logging.debug(troe_dict)
-    return arr_dict, troe_dict
+
+    return arrhenius_dict, troe_dict
 
 
 def parse_kpp_k57(kpp_str):
@@ -66,20 +68,44 @@ def parse_kpp_k57(kpp_str):
         (str) kpp_str: k57 reaction string
 
     Returns
-        (tuple of dict): two dicts of MICM Troe reaction coefficients
+        (tuple of dict): MICM Troe and Ternary reaction coefficients
 
 
     k57 formula from WRF-KPP
     ------------------------
     k57(T, [M])
+    sum of Troe and Ternary reactions
     """
     coeffs = parse_coeffs(kpp_str)
 
     troe_dict = dict()
     troe_dict['type'] = 'TROE'
 
-    troe_second_dict = dict()
-    troe_second_dict['type'] = 'TROE'
+    ternary_dict = dict()
+    ternary_dict['type'] = 'TERNARY_CHEMICAL_ACTIVATION'
 
-    return troe_dict, troe_second_dict
+    if ('k57' in kpp_str):
+        troe_dict['k0_A']      = 5.9e-33
+        troe_dict['k0_B']      = - 1.4
+        troe_dict['k0_C']      = 0.0
+        troe_dict['kinf_A']    = 1.1e-12
+        troe_dict['kinf_B']    = 1.3
+        troe_dict['kinf_C']    = 0.0
+        troe_dict['Fc']        = 0.6
+        troe_dict['N']         = 1.0
+        ternary_dict['k0_A']   = 1.5e-13
+        ternary_dict['k0_B']   = 0.6
+        ternary_dict['k0_C']   = 0.0
+        ternary_dict['kinf_A'] = 2.9e9
+        ternary_dict['kinf_B'] = 6.1
+        ternary_dict['kinf_C'] = 0.0
+        ternary_dict['Fc']     = 0.6
+        ternary_dict['N']      = 1.0
+    else:
+        logging.error('unrecognized KPP k57 syntax')
+
+    logging.debug(troe_dict)
+    logging.debug(ternary_dict)
+
+    return troe_dict, ternary_dict
 
