@@ -11,3 +11,4 @@
 <R10> NO2  + hv = NO  + O     : (1.289E-02) * SUN;
 <R11> O    + NO = NO2         : TROE(9.00D-32, 1.5_dp, 3.00D-11, 0.0_dp, TEMP, C_M);
 <R12> OH   + HNO3 = NO3 + H2O : k45(TEMP, C_M);
+<R13> CO   + OH = HO2 + CO2   : k57(TEMP, C_M);
