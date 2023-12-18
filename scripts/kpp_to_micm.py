@@ -38,8 +38,9 @@ from glob import glob
 
 from rxn_arrhenius import parse_kpp_arrhenius
 from rxn_troe import parse_kpp_troe
+from rxn_special import parse_kpp_k45, parse_kpp_k57
 
-__version__ = 'v1.04'
+__version__ = 'v1.05'
 
 
 def read_kpp_config(kpp_dir, kpp_name):
@@ -166,6 +167,7 @@ def micm_equation_json(lines):
         N_reactants = len(reactants)
 
         equation_dict = dict()
+        equation_second_dict = None
 
         if 'SUN' in coeffs:
             equation_dict['type'] = 'PHOTOLYSIS'
@@ -175,6 +177,10 @@ def micm_equation_json(lines):
         elif 'TROE' in coeffs:
             equation_dict = parse_kpp_troe(coeffs,
                 N_reactants=N_reactants)
+        elif 'k45' in coeffs:
+            equation_dict, equation_second_dict = parse_kpp_k45(coeffs)
+        elif 'k57' in coeffs:
+            equation_dict, equation_second_dict = parse_kpp_k57(coeffs)
         else:
             # default to Arrhenius with a single coefficient
             coeffs = coeffs.replace('(', '').replace(')', '')
@@ -184,25 +190,46 @@ def micm_equation_json(lines):
         equation_dict['reactants'] = dict()
         equation_dict['products'] = dict()
 
+        if equation_second_dict is not None:
+            equation_second_dict['reactants'] = dict()
+            equation_second_dict['products'] = dict()
+
         for reactant in reactants:
             if reactant[0].isdigit():
                 equation_dict['reactants'][reactant[1:]] \
                     = {'qty': float(reactant[0])}
+                if equation_second_dict is not None:
+                    equation_second_dict['reactants'][reactant[1:]] \
+                        = {'qty': float(reactant[0])}
             elif 'hv' in reactant:
                 pass
             else:
                 equation_dict['reactants'][reactant] = dict()
+                if equation_second_dict is not None:
+                    equation_second_dict['reactants'][reactant] = dict()
 
         for product in products:
             if product[0].isdigit():
                 equation_dict['products'][product[1:]] \
                     = {'yield': float(product[0])}
+                if equation_second_dict is not None:
+                    equation_second_dict['products'][product[1:]] \
+                        = {'yield': float(product[0])}
             else:
                 equation_dict['products'][product] = dict()
+                if equation_second_dict is not None:
+                    equation_second_dict['products'][product] = dict()
 
-        equation_dict['MUSICA name'] = label
+        if equation_second_dict is not None:
+            equation_dict['MUSICA name'] = label + '_first_term'
+            equation_second_dict['MUSICA name'] = label + '_second_term'
+        else:
+            equation_dict['MUSICA name'] = label
 
         equations.append(equation_dict)
+
+        if equation_second_dict is not None:
+            equations.append(equation_second_dict)
 
     return equations
 
@@ -220,13 +247,13 @@ if __name__ == '__main__':
         default=os.path.join('..', 'configs', 'kpp'),
         help='KPP input config directory')
     parser.add_argument('--kpp_name', type=str,
-        default='small_strato',
+        default='test',
         help='KPP config name')
     parser.add_argument('--micm_dir', type=str,
         default=os.path.join('..', 'configs', 'micm'),
         help='MICM output species config file')
     parser.add_argument('--mechanism', type=str,
-        default='Chapman',
+        default='test',
         help='mechanism name')
     parser.add_argument('--debug', action='store_true',
         help='set logging level to debug')

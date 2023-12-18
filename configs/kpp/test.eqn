@@ -1,5 +1,4 @@
-#EQUATIONS { Small Stratospheric Mechanism }
-
+#EQUATIONS { Test Mechanism }
 <R1>  O2   + hv = 2O          : (2.643E-10) * SUN*SUN*SUN;
 <R2>  O    + O2 = O3          : (8.018E-17);
 <R3>  O3   + hv = O   + O2    : (6.120E-04) * SUN;
@@ -11,3 +10,5 @@
 <R9>  NO2  + O  = NO  + O2    : (1.069E-11);
 <R10> NO2  + hv = NO  + O     : (1.289E-02) * SUN;
 <R11> O    + NO = NO2         : TROE(9.00D-32, 1.5_dp, 3.00D-11, 0.0_dp, TEMP, C_M);
+<R12> OH   + HNO3 = NO3 + H2O : k45(TEMP, C_M);
+<R13> CO   + OH = HO2 + CO2   : k57(TEMP, C_M);
