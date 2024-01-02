@@ -244,10 +244,12 @@ if __name__ == '__main__':
         default=sys.stdout,
         help='log file (default stdout)')
     parser.add_argument('--kpp_dir', type=str,
-        default=os.path.join('..', 'configs', 'kpp'),
+        # default=os.path.join('..', 'configs', 'kpp'),
+        default=os.path.join('..', 'racm_esrl_vcp', 'kpp'),
         help='KPP input config directory')
     parser.add_argument('--kpp_name', type=str,
-        default='test',
+        # default='test',
+        default='racm_soa_vbs',
         help='KPP config name')
     parser.add_argument('--micm_dir', type=str,
         default=os.path.join('..', 'configs', 'micm'),
