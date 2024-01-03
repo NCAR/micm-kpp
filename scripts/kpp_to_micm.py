@@ -156,9 +156,13 @@ def micm_equation_json(lines):
         reactants = lhs.split('+')
         products = rhs.split('+')
 
-        # extract equation label delimited by < >
-        label, reactants[0] = tuple(reactants[0].split('>'))
-        label = label.lstrip('<')
+        # extract equation label delimited by < > or { }
+        if '>' in reactants[0]:
+            label, reactants[0] = tuple(reactants[0].split('>'))
+            label = label.lstrip('<')
+        else:
+            label, reactants[0] = tuple(reactants[0].split('}'))
+            label = label.lstrip('{')
 
         # remove trailing and leading whitespace
         reactants = [reactant.strip().lstrip() for reactant in reactants]
