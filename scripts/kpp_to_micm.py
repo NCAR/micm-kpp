@@ -163,7 +163,8 @@ def micm_equation_json(lines):
             label = label.lstrip('<')
         else:
             label, reactants[0] = tuple(reactants[0].split('}'))
-            label = label.lstrip('{')
+            label = label.replace('{', '').lstrip()
+        logging.info('label:' + label)
 
         # remove trailing and leading whitespace
         reactants = [reactant.strip().lstrip() for reactant in reactants]
