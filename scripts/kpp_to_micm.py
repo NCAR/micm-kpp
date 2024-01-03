@@ -36,6 +36,7 @@ import logging
 import json
 from glob import glob
 
+from parse_kpp_utils import is_float
 from rxn_arrhenius import parse_kpp_arrhenius
 from rxn_troe import parse_kpp_troe
 from rxn_special import parse_kpp_k45, parse_kpp_k57
@@ -173,7 +174,7 @@ def micm_equation_json(lines):
         equation_dict = dict()
         equation_second_dict = None
 
-        if 'SUN' in coeffs:
+        if 'SUN' or 'Pj_' in coeffs:
             equation_dict['type'] = 'PHOTOLYSIS'
         elif 'ARR' in coeffs:
             equation_dict = parse_kpp_arrhenius(coeffs,
@@ -189,7 +190,10 @@ def micm_equation_json(lines):
             # default to Arrhenius with a single coefficient
             coeffs = coeffs.replace('(', '').replace(')', '')
             equation_dict['type'] = 'ARRHENIUS'
-            equation_dict['A'] = float(coeffs)
+            if is_float(coeffs):
+                equation_dict['A'] = float(coeffs)
+            else:
+                equation_dict['A'] = 0.0
 
         equation_dict['reactants'] = dict()
         equation_dict['products'] = dict()
@@ -256,10 +260,12 @@ if __name__ == '__main__':
         default='racm_soa_vbs',
         help='KPP config name')
     parser.add_argument('--micm_dir', type=str,
-        default=os.path.join('..', 'configs', 'micm'),
+        # default=os.path.join('..', 'configs', 'micm'),
+        default=os.path.join('..', 'racm_esrl_vcp', 'micm'),
         help='MICM output species config file')
     parser.add_argument('--mechanism', type=str,
-        default='test',
+        # default='test',
+        default='RACM_SOA_VBS',
         help='mechanism name')
     parser.add_argument('--debug', action='store_true',
         help='set logging level to debug')

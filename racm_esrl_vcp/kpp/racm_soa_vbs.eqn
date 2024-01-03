@@ -56,7 +56,6 @@
  {054:029} NO3+NO2=N2O5  		: TROE( 2.0D-30 , 4.4_dp , 1.4D-12 , 0.7_dp , TEMP, C_M) ;
  {055:030} N2O5=NO2+NO3  		: TROEE(3.70D26,11000.0_dp, 2.0D-30 , 4.4_dp , 1.4D-12 , 0.7_dp, TEMP, C_M ) ;
  {056:031} NO3+NO3=NO2+NO2{+O2} 	: ARR2( 8.50D-13 , 2450.0_dp, TEMP ) ;
- {057:032 rxn} HO+M{=H2}=H2O+HO2 		: (5.31D-7*ARR2( 2.8D-12 , 1800.0_dp, TEMP )) ;{fixed H2 (531ppb) Novelli '99}
  {058:033} HO+SO2=SULF+HO2 		: TROE( 3.3D-31 , 4.3_dp , 1.6D-12 , 0.0_dp , TEMP, C_M) ;
  {059:034} CO+HO=HO2+CO2  		: k57(TEMP,C_M) ;
  {060:035} NALD+HO=HCHO+CO+NO2 		: ARR2( 5.60D-12 , -270.0_dp, TEMP ) ;
