@@ -175,7 +175,7 @@ def micm_equation_json(lines):
         equation_dict = dict()
         equation_second_dict = None
 
-        if 'SUN' or 'Pj_' in coeffs:
+        if ('SUN' in coeffs) or ('Pj_' in coeffs):
             equation_dict['type'] = 'PHOTOLYSIS'
         elif 'ARR' in coeffs:
             equation_dict = parse_kpp_arrhenius(coeffs,
