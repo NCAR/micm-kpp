@@ -34,6 +34,7 @@ def parse_kpp_arrhenius(kpp_str, N_reactants=2):
     """
 
     coeffs = parse_coeffs(kpp_str)
+    logging.debug('coeffs:' + str(coeffs))
 
     arrhenius_dict = dict()
     arrhenius_dict['type'] = 'ARRHENIUS'

@@ -38,7 +38,8 @@ def parse_coeffs(kpp_str):
         (list of float): [float(x), float(y), float(z), ...]
     """
 
-    logging.debug(kpp_str)
+    logger = logging.getLogger(__name__)
+    logger.debug('kpp_str:' + str(kpp_str))
 
     coeff_strs = kpp_str.split('(')[1].split(')')[0].split(',')
 
@@ -50,7 +51,7 @@ def parse_coeffs(kpp_str):
         if (is_float(coeff_str_reform)):
             coeffs.append(float(coeff_str_reform))
 
-    logging.debug(coeffs)
+    logger.debug(coeffs)
 
     return coeffs
 
