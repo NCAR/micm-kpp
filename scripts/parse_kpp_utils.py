@@ -7,7 +7,6 @@ File:
     parse_kpp_utils.py
 """
 
-import re
 import logging
 
 
@@ -33,7 +32,7 @@ def parse_coeffs(kpp_str):
     Parse coefficients from a KPP string
 
     Parameters
-        (str) kpp_str: f(x, y, z, ...)
+        (str) kpp_str: 'f(x, y, z, ...)'
 
     Returns
         (list of float): [float(x), float(y), float(z), ...]
@@ -65,13 +64,21 @@ def parse_coeffs(kpp_str):
 def parse_term(kpp_str):
     """
     Parse a reaction term from a KPP string
+        with a numerical coefficient x and molecular formula M
 
     Parameters
-        (str) kpp_str
+        (str) kpp_str: 'x M'
 
     Returns
+        (tuple float, str): float(x), M
     """
 
     logger = logging.getLogger(__name__)
     logger.debug('kpp_str:' + str(kpp_str))
+
+    n = 0
+    while ( not kpp_str[n].isalpha() ):
+        n += 1
+
+    return float(kpp_str[0:n]), kpp_str[n:]
 
