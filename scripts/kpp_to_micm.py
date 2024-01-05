@@ -167,8 +167,8 @@ def micm_equation_json(lines):
         logging.info('label:' + label)
 
         # remove trailing and leading whitespace
-        reactants = [reactant.strip().lstrip() for reactant in reactants]
-        products = [product.strip().lstrip() for product in products]
+        reactants = [reactant.strip().lstrip().replace('{', '').replace('}', '') for reactant in reactants]
+        products = [product.strip().lstrip().replace('{', '').replace('}', '') for product in products]
 
         N_reactants = len(reactants)
 
