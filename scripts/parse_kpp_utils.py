@@ -41,7 +41,12 @@ def parse_coeffs(kpp_str):
     logger = logging.getLogger(__name__)
     logger.debug('kpp_str:' + str(kpp_str))
 
-    coeff_strs = kpp_str.split('(')[1].split(')')[0].split(',')
+    if (kpp_str.lstrip()[0] == '('):
+        coeff_strs = kpp_str.lstrip().rstrip()[1:-1].split('(')[1].split(')')[0].split(',')
+    else:
+        coeff_strs = kpp_str.split('(')[1].split(')')[0].split(',')
+
+    logger.debug('coeff_strs:' + str(coeff_strs))
 
     coeffs = list()
 
