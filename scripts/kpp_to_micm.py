@@ -37,7 +37,7 @@ import logging
 import json
 from glob import glob
 
-from parse_kpp_utils import is_float
+from parse_kpp_utils import is_float, parse_term
 from rxn_arrhenius import parse_kpp_arrhenius
 from rxn_troe import parse_kpp_troe
 from rxn_special import parse_kpp_k45, parse_kpp_k57
@@ -254,20 +254,20 @@ if __name__ == '__main__':
         default=sys.stdout,
         help='log file (default stdout)')
     parser.add_argument('--kpp_dir', type=str,
-        # default=os.path.join('..', 'configs', 'kpp'),
-        default=os.path.join('..', 'racm_esrl_vcp', 'kpp'),
+        default=os.path.join('..', 'configs', 'kpp'),
+        # default=os.path.join('..', 'racm_esrl_vcp', 'kpp'),
         help='KPP input config directory')
     parser.add_argument('--kpp_name', type=str,
-        # default='test',
-        default='racm_soa_vbs',
+        default='test',
+        # default='racm_soa_vbs',
         help='KPP config name')
     parser.add_argument('--micm_dir', type=str,
-        # default=os.path.join('..', 'configs', 'micm'),
-        default=os.path.join('..', 'racm_esrl_vcp', 'micm'),
+        default=os.path.join('..', 'configs', 'micm'),
+        # default=os.path.join('..', 'racm_esrl_vcp', 'micm'),
         help='MICM output species config file')
     parser.add_argument('--mechanism', type=str,
-        # default='test',
-        default='RACM_SOA_VBS',
+        default='test',
+        # default='RACM_SOA_VBS',
         help='mechanism name')
     parser.add_argument('--debug', action='store_true',
         help='set logging level to debug')
