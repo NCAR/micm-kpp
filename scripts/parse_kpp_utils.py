@@ -7,6 +7,7 @@ File:
     parse_kpp_utils.py
 """
 
+import re
 import logging
 
 
@@ -59,4 +60,18 @@ def parse_coeffs(kpp_str):
     logger.debug(coeffs)
 
     return coeffs
+
+
+def parse_term(kpp_str):
+    """
+    Parse a reaction term from a KPP string
+
+    Parameters
+        (str) kpp_str
+
+    Returns
+    """
+
+    logger = logging.getLogger(__name__)
+    logger.debug('kpp_str:' + str(kpp_str))
 
