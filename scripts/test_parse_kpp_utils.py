@@ -35,6 +35,9 @@ def test_parse_coeffs():
 
 def test_parse_term():
     from parse_kpp_utils import parse_term
+    x, M = parse_term('H2O')
+    assert x == 1
+    assert M == 'H2O'
     x, M = parse_term('3H2O')
     assert x == 3
     assert M == 'H2O'

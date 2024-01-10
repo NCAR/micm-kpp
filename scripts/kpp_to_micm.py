@@ -204,6 +204,7 @@ def micm_equation_json(lines):
             equation_second_dict['reactants'] = dict()
             equation_second_dict['products'] = dict()
 
+        # parse_term
         for reactant in reactants:
             if reactant[0].isdigit():
                 equation_dict['reactants'][reactant[1:]] \
