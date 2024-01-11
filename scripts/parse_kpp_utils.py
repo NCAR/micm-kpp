@@ -77,14 +77,16 @@ def parse_term(kpp_str):
     logger = logging.getLogger(__name__)
     logger.debug('kpp_str:' + str(kpp_str))
 
+    short_str = kpp_str.lstrip().rstrip()
+
     n = 0
-    while (not kpp_str[n].isalpha()):
+    while (not short_str[n].isalpha()):
         n += 1
 
     if (n > 0):
-        x = float(kpp_str[0:n])
+        x = float(short_str[0:n])
     else: x = 1.0
-    M = kpp_str[n:]
+    M = short_str[n:]
 
     return x, M
 
