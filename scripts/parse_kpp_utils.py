@@ -64,7 +64,8 @@ def parse_coeffs(kpp_str):
 def parse_term(kpp_str):
     """
     Parse a reaction term from a KPP string
-        with a numerical coefficient x and molecular formula M
+        with a numerical coefficient x and molecular formula M;
+        if x is absent set x = 1
 
     Parameters
         (str) kpp_str: 'x M'
@@ -77,8 +78,13 @@ def parse_term(kpp_str):
     logger.debug('kpp_str:' + str(kpp_str))
 
     n = 0
-    while ( not kpp_str[n].isalpha() ):
+    while (not kpp_str[n].isalpha()):
         n += 1
 
-    return float(kpp_str[0:n]), kpp_str[n:]
+    if (n > 0):
+        x = float(kpp_str[0:n])
+    else: x = 1.0
+    M = kpp_str[n:]
+
+    return x, M
 
