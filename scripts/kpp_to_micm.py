@@ -204,32 +204,20 @@ def micm_equation_json(lines):
             equation_second_dict['reactants'] = dict()
             equation_second_dict['products'] = dict()
 
-        # parse_term
         for reactant in reactants:
-            if reactant[0].isdigit():
-                equation_dict['reactants'][reactant[1:]] \
-                    = {'qty': float(reactant[0])}
-                if equation_second_dict is not None:
-                    equation_second_dict['reactants'][reactant[1:]] \
-                        = {'qty': float(reactant[0])}
-            elif 'hv' in reactant:
+            if 'hv' in reactant:
                 pass
             else:
-                equation_dict['reactants'][reactant] = dict()
+                x, M = parse_term(reactant)
+                equation_dict['reactants'][M] = {'qty': x}
                 if equation_second_dict is not None:
-                    equation_second_dict['reactants'][reactant] = dict()
+                    equation_second_dict['reactants'][M] = {'qty': x}
 
         for product in products:
-            if product[0].isdigit():
-                equation_dict['products'][product[1:]] \
-                    = {'yield': float(product[0])}
-                if equation_second_dict is not None:
-                    equation_second_dict['products'][product[1:]] \
-                        = {'yield': float(product[0])}
-            else:
-                equation_dict['products'][product] = dict()
-                if equation_second_dict is not None:
-                    equation_second_dict['products'][product] = dict()
+            x, M = parse_term(product)
+            equation_dict['products'][M] = {'yield': x}
+            if equation_second_dict is not None:
+                equation_second_dict['products'][M] = {'yield': x}
 
         if equation_second_dict is not None:
             equation_dict['MUSICA name'] = label + '_first_term'
