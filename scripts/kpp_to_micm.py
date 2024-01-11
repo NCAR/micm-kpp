@@ -24,10 +24,8 @@ Description:
     equations with a single coefficient are assumed to be ARRHENIUS reactions.
 
 TODO:
-    (1) Translate stoichiometric coefficients in the equation string
-    with more than one digit.
-    (2) Add pytest unit test for method micm_equation_json.
-    (3+) Add support for many more reaction types ...
+    (1) Add pytest unit test for method micm_equation_json.
+    (2+) Add support for several other reaction types ...
 """
 
 import os
