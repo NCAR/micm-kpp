@@ -32,15 +32,21 @@ def parse_coeffs(kpp_str):
     Parse coefficients from a KPP string
 
     Parameters
-        (str) kpp_str: f(x, y, z, ...)
+        (str) kpp_str: 'f(x, y, z, ...)'
 
     Returns
         (list of float): [float(x), float(y), float(z), ...]
     """
 
-    logging.debug(kpp_str)
+    logger = logging.getLogger(__name__)
+    logger.debug('kpp_str:' + str(kpp_str))
 
-    coeff_strs = kpp_str.split('(')[1].split(')')[0].split(',')
+    if (kpp_str.lstrip()[0] == '('):
+        coeff_strs = kpp_str.lstrip().rstrip()[1:-1].split('(')[1].split(')')[0].split(',')
+    else:
+        coeff_strs = kpp_str.split('(')[1].split(')')[0].split(',')
+
+    logger.debug('coeff_strs:' + str(coeff_strs))
 
     coeffs = list()
 
@@ -50,7 +56,37 @@ def parse_coeffs(kpp_str):
         if (is_float(coeff_str_reform)):
             coeffs.append(float(coeff_str_reform))
 
-    logging.debug(coeffs)
+    logger.debug(coeffs)
 
     return coeffs
+
+
+def parse_term(kpp_str):
+    """
+    Parse a reaction term from a KPP string
+        with a numerical coefficient x and molecular formula M;
+        if x is absent set x = 1
+
+    Parameters
+        (str) kpp_str: 'x M'
+
+    Returns
+        (tuple float, str): float(x), M
+    """
+
+    logger = logging.getLogger(__name__)
+    logger.debug('kpp_str:' + str(kpp_str))
+
+    short_str = kpp_str.lstrip().rstrip()
+
+    n = 0
+    while (not short_str[n].isalpha()):
+        n += 1
+
+    if (n > 0):
+        x = float(short_str[0:n])
+    else: x = 1.0
+    M = short_str[n:]
+
+    return x, M
 
