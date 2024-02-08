@@ -21,6 +21,11 @@ import argparse
 import logging
 import json
 
+
+def initial_conditions(species_json, reactions_json):
+    pass
+
+
 if __name__ == '__main__':
 
     """
@@ -62,3 +67,5 @@ if __name__ == '__main__':
 
     species_json_str = json.dumps(species_json, indent=4)
     reactions_json_str = json.dumps(reactions_json, indent=4)
+
+    initial_conditions(species_json, reactions_json)
