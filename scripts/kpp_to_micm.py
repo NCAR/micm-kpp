@@ -119,7 +119,8 @@ def micm_species_json(lines, fixed=False, tolerance=1.0e-12):
     for line in lines:
         lhs, rhs = tuple(line.split('='))
         logging.debug((lhs, rhs))
-        species_dict = {'name': lhs.strip().lstrip(), 'type': 'CHEM_SPEC'}
+        species_dict = {'name': lhs.replace('{', '').replace('}', '').strip().lstrip(),
+            'type': 'CHEM_SPEC'}
         if fixed:
             species_dict['tracer type'] = 'CONSTANT'
         else:
