@@ -53,3 +53,12 @@ if __name__ == '__main__':
 
     reactions_file = os.path.join(args.micm_dir, args.mechanism, 'reactions.json')
     logging.info(reactions_file)
+
+    with open(species_file, 'r') as f:
+        species_json = json.load(f)
+
+    with open(reactions_file, 'r') as f:
+        reactions_json = json.load(f)
+
+    species_json_str = json.dumps(species_json, indent=4)
+    reactions_json_str = json.dumps(reactions_json, indent=4)
