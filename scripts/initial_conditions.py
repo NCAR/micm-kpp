@@ -48,3 +48,8 @@ if __name__ == '__main__':
     logging_level = logging.DEBUG if args.debug else logging.INFO
     logging.basicConfig(stream=args.logfile, level=logging_level)
 
+    species_file = os.path.join(args.micm_dir, args.mechanism, 'species.json')
+    logging.info(species_file)
+
+    reactions_file = os.path.join(args.micm_dir, args.mechanism, 'reactions.json')
+    logging.info(reactions_file)
