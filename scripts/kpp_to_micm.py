@@ -189,7 +189,8 @@ def micm_equation_json(lines):
             equation_dict, equation_second_dict = parse_kpp_k57(coeffs)
         else:
             # default to Arrhenius with a single coefficient
-            coeffs = coeffs.replace('(', '').replace(')', '')
+            coeffs = coeffs.replace('(', '').replace(')', '').replace(
+                'D', 'E').replace('_dp', '')
             equation_dict['type'] = 'ARRHENIUS'
             if is_float(coeffs):
                 equation_dict['A'] = float(coeffs)
