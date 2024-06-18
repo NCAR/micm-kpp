@@ -1,0 +1,130 @@
+// ******************************************************** ;
+//       Citation
+//       
+//       A citation to
+//  the MCM website and the relevant mechanism construction
+//  protocols should be given in any publication using
+//  information obtained from this source, using the following
+//  or comparable wording:
+//       
+// The chemical mechanistic
+//  information was taken from the Master Chemical Mechanism,
+//  MCM v3.3.1 (reference), via  website:
+//  http://mcm.york.ac.uk/
+// 
+// The reference should be: 
+// 
+// 
+//  For non-aromatic schemes:
+//    
+//       Jenkin et al.,
+//  Atmos. Environ., 31, 81, 1997
+//  [doi:10.1016/S1352-2310(96)00105-7]
+//       Saunders et
+//  al., Atmos. Chem. Phys., 3, 161, 2003
+//  [doi:10.5194/acp-3-161-2003]
+//    
+//    For aromatic
+//  schemes:
+//    
+//       Jenkin et al., Atmos. Chem. Phys.,
+//  3, 181, 2003 [doi:10.5194/acp-3-181-2003]
+//       Bloss et
+//  al., Atmos. Chem. Phys., 5, 641, 2005
+//  [doi:10.5194/acp-5-641-2005]
+//    
+//    For the
+//  β-caryophyllene scheme:
+//    
+//       Jenkin et al.,
+//  Atmos. Chem. Phys.,  12, 5275, 2012
+//  [doi:10.5194/acp-12-5275-2012]
+//    
+//    For the isoprene
+//  scheme:
+//    
+//       Jenkin et al., Atmos. Chem. Phys.,
+//  15, 11433-11459, 2015 [doi:10.5194/acp-15-11433-2015]
+// ******************************************************** ;
+
+#INCLUDE atoms 
+
+#DEFVAR
+H2O = 2H + O ;
+O = O ;
+O3 = 3O ;
+NO = N + O ;
+NO2 = N + 2O ;
+NO3 = N + 3O ;
+O1D = O ;
+N2O5 = 2N + 5O ;
+OH = H + O ;
+HO2 = H + 2O ;
+H2 = 2H ;
+CO = C + O ;
+H2O2 = 2H + 2O ;
+HONO = H + N + 2O ;
+HNO3 = H + N + 3O ;
+HO2NO2 = H + N + 4O ;
+SO2 = 2O + S ;
+SO3 = 3O + S ;
+HSO3 = H + 3O + S ;
+NA = IGNORE ;
+SA = IGNORE ;
+
+#INLINE F90_RCONST 
+  USE constants_mcm
+  ! Peroxy radicals
+  ! WARNING: The following species do not have SMILES strings in the database. 
+  !           If any of these are peroxy radicals the RO2 sum will be wrong! 
+  ! NA SA
+  CALL define_constants_mcm
+#ENDINLINE {above lines go into the SUBROUTINES UPDATE_RCONST and UPDATE_PHOTO}
+
+#EQUATIONS
+<1> O = O3 : 5.6E-34*N2*(TEMP/300.)**(-2.6)*O2+6.0E-34*O2*(TEMP/300.)**(-2.6)*O2 ;
+<2> O + O3 = PROD : 8.0E-12*EXP(-2060./TEMP) ;
+<3> NO + O = NO2 : KMT01 ;
+<4> NO2 + O = NO : 5.5E-12*EXP(188./TEMP) ;
+<5> NO2 + O = NO3 : KMT02 ;
+<6> O1D = O : 3.2E-11*EXP(67./TEMP)*O2+2.0E-11*EXP(130./TEMP)*N2 ;
+<7> NO + O3 = NO2 : 1.4E-12*EXP(-1310./TEMP) ;
+<8> NO2 + O3 = NO3 : 1.4E-13*EXP(-2470./TEMP) ;
+<9> NO + NO = NO2 + NO2 : 3.3E-39*EXP(530./TEMP)*O2 ;
+<10> NO + NO3 = NO2 + NO2 : 1.8E-11*EXP(110./TEMP) ;
+<11> NO2 + NO3 = NO + NO2 : 4.50E-14*EXP(-1260./TEMP) ;
+<12> NO2 + NO3 = N2O5 : KMT03 ;
+<13> O1D = OH + OH : 2.14E-10*H2O ;
+<14> O3 + OH = HO2 : 1.70E-12*EXP(-940./TEMP) ;
+<15> H2 + OH = HO2 : 7.7E-12*EXP(-2100./TEMP) ;
+<16> CO + OH = HO2 : KMT05 ;
+<17> H2O2 + OH = HO2 : 2.9E-12*EXP(-160./TEMP) ;
+<18> HO2 + O3 = OH : 2.03E-16*(TEMP/300.)**(4.57)*EXP(693./TEMP) ;
+<19> HO2 + OH = PROD : 4.8E-11*EXP(250./TEMP) ;
+<20> HO2 + HO2 = H2O2 : 2.20E-13*KMT06*EXP(600./TEMP)+1.90E-33*M*KMT06*EXP(980./TEMP) ;
+<21> NO + OH = HONO : KMT07 ;
+<22> NO2 + OH = HNO3 : KMT08 ;
+<23> NO3 + OH = HO2 + NO2 : 2.0E-11 ;
+<24> HO2 + NO = NO2 + OH : 3.45E-12*EXP(270./TEMP) ;
+<25> HO2 + NO2 = HO2NO2 : KMT09 ;
+<26> HO2NO2 + OH = NO2 : 3.2E-13*EXP(690./TEMP)*1.0 ;
+<27> HO2 + NO3 = NO2 + OH : 4.0E-12 ;
+<28> HONO + OH = NO2 : 2.5E-12*EXP(260./TEMP) ;
+<29> HNO3 + OH = NO3 : KMT11 ;
+<30> O + SO2 = SO3 : 4.0E-32*EXP(-1000./TEMP)*M ;
+<31> OH + SO2 = HSO3 : KMT12 ;
+<32> HSO3 = HO2 + SO3 : 1.3E-12*EXP(-330./TEMP)*O2 ;
+<33> HNO3 = NA : 6.00E-06 ;
+<34> N2O5 = NA + NA : 4.00E-04 ;
+<35> SO3 = SA : 1.20E-15*H2O ;
+<36> O3 + hv = O1D : J(J_O3_O1D) ;
+<37> O3 + hv = O : J(J_O3_O3P) ;
+<38> H2O2 + hv = OH + OH : J(J_H2O2) ;
+<39> NO2 + hv = NO + O : J(J_NO2) ;
+<40> NO3 + hv = NO : J(J_NO3_NO) ;
+<41> NO3 + hv = NO2 + O : J(J_NO3_NO2) ;
+<42> HONO + hv = NO + OH : J(J_HONO) ;
+<43> HNO3 + hv = NO2 + OH : J(J_HNO3) ;
+<44> N2O5 = NO2 + NO3 : KMT04 ;
+<45> HO2NO2 = HO2 + NO2 : KMT10 ;
+// End of Subset. No. of Species = 20, No. of Reactions = 45
