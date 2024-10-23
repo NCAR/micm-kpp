@@ -119,7 +119,8 @@ def micm_species_json(lines, fixed=False, tolerance=1.0e-12):
     for line in lines:
         lhs, rhs = tuple(line.split('='))
         logging.debug((lhs, rhs))
-        species_dict = {'name': lhs.strip().lstrip(), 'type': 'CHEM_SPEC'}
+        species_dict = {'name': lhs.replace('{', '').replace('}', '').strip().lstrip(),
+            'type': 'CHEM_SPEC'}
         if fixed:
             species_dict['tracer type'] = 'CONSTANT'
         else:
@@ -188,7 +189,8 @@ def micm_equation_json(lines):
             equation_dict, equation_second_dict = parse_kpp_k57(coeffs)
         else:
             # default to Arrhenius with a single coefficient
-            coeffs = coeffs.replace('(', '').replace(')', '')
+            coeffs = coeffs.replace('(', '').replace(')', '').replace(
+                'D', 'E').replace('_dp', '')
             equation_dict['type'] = 'ARRHENIUS'
             if is_float(coeffs):
                 equation_dict['A'] = float(coeffs)

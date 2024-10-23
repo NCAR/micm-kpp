@@ -1,0 +1,9 @@
+CONC.O2,0.75
+CONC.O3,8.0e-6
+ENV.temperature,210.0
+ENV.pressure,6000.0
+ENV.air_density,3.6
+ENV.time_step,60
+PHOTO.R1,1.0e-6
+PHOTO.R3,1.0e-6
+PHOTO.R5,1.0e-6
