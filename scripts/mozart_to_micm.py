@@ -156,7 +156,7 @@ if __name__ == '__main__':
     for section in sections:
         logging.info('____ section %s ____' % section)
         for line in sections[section]:
-            logging.info(line)
+            logging.debug(line)
         print('\n')
 
     """
@@ -168,4 +168,24 @@ if __name__ == '__main__':
     Generate MICM species JSON from #Variable section
     """
     variable_species_json = parse_species(sections['#Variable'])
+
+    """
+    Assemble MICM species JSON
+    """
+    micm_species_json = {'camp-data': fixed_species_json + variable_species_json}
+    micm_species_json_str = json.dumps(micm_species_json, indent=4)
+    logging.info('____ MICM species ____')
+    logging.info(micm_species_json_str)
+    print('\n')
+
+    """
+    Write MICM JSON
+    """
+    micm_mechanism_dir = os.path.join(args.micm_dir, args.mechanism)
+    if not os.path.exists(args.micm_dir):
+        os.mkdir(args.micm_dir)
+    if not os.path.exists(micm_mechanism_dir):
+        os.mkdir(micm_mechanism_dir)
+    with open(os.path.join(micm_mechanism_dir, 'species.json'), 'w') as f:
+        json.dump(micm_species_json, f, indent=4)
 
