@@ -22,6 +22,37 @@ from glob import glob
 __version__ = 'v1.00'
 
 
+def read_mozart_config(config_dir, config_name):
+    """
+    Read all Mozart config files in a directory
+
+    Parameters
+        (str) mozart_dir: Mozart directory
+
+    Returns
+        (list of str): all lines from all config files
+    """
+
+    suffixes = ['.spc', '.eqn', '.def']
+
+    lines = list()
+
+    for suffix in suffixes:
+        files = glob(os.path.join(config_dir, config_name + '*' + suffix))
+        logging.debug(files)
+        for filename in files:
+            with open(filename, 'r') as f:
+                lines.extend(f.readlines())
+
+    # remove empty lines and tabs
+    lines = [line.replace('\t', '') for line in lines if line.strip()] 
+
+    for line in lines:
+        logging.debug(line.strip())
+
+    return lines
+
+
 if __name__ == '__main__':
 
     """
@@ -52,4 +83,9 @@ if __name__ == '__main__':
     """
     logging_level = logging.DEBUG if args.debug else logging.INFO
     logging.basicConfig(stream=args.logfile, level=logging_level)
+
+    """
+    Read Mozart config files
+    """
+    lines = read_mozart_config(args.input_dir, args.input_name)
 
