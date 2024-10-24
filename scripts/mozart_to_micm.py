@@ -53,6 +53,32 @@ def read_mozart_config(config_dir, config_name):
     return lines
 
 
+def split_by_section(lines):
+    """
+    Split config lines by section
+
+    Parameters
+        (list of str) lines: all lines config files
+
+    Returns
+        (dict of list of str): lines in each section
+    """
+
+    sections = {'#Variable': [],
+                '#Fixed': [],
+                '#Equations': []}
+
+    joined_lines = ''.join(lines)
+    section_blocks = joined_lines.split('#')
+
+    for section in sections:
+        for section_block in section_blocks:
+            if section.replace('#', '') in section_block:
+                sections[section].extend(section_block.split('\n')[1:-1])
+
+    return sections
+
+
 if __name__ == '__main__':
 
     """
@@ -88,4 +114,14 @@ if __name__ == '__main__':
     Read Mozart config files
     """
     lines = read_mozart_config(args.input_dir, args.input_name)
+
+    """
+    Split configs by section
+    """
+    sections = split_by_section(lines)
+    for section in sections:
+        logging.info('____ section %s ____' % section)
+        for line in sections[section]:
+            logging.info(line)
+        print('\n')
 
