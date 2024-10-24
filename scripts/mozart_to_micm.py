@@ -79,6 +79,40 @@ def split_by_section(lines):
     return sections
 
 
+def parse_species(lines, fixed=False, tolerance=1.0e-12):
+    """
+    Generate species JSON
+
+    Parameters
+        (list of str) lines: lines of species section
+        (bool) fixed: set constant tracer
+        (float) tolerance: absolute tolerance
+
+    Returns
+        (list of dict): list of MICM species entries
+    """
+
+    species_json = list() # list of dict
+
+    for line in lines:
+        if '->' in line:
+            lhs, rhs = tuple(line.split('->'))
+            logging.debug((lhs, rhs))
+        else:
+            lhs = line
+            logging.debug(lhs)
+        species_dict = {'name': lhs.replace('{', '').replace('}', '').strip().lstrip(),
+            'type': 'CHEM_SPEC'}
+        if fixed:
+            species_dict['tracer type'] = 'CONSTANT'
+        else:
+            species_dict['absolute tolerance'] = tolerance
+        species_json.append(species_dict)
+
+    return species_json
+
+
+
 if __name__ == '__main__':
 
     """
@@ -124,4 +158,14 @@ if __name__ == '__main__':
         for line in sections[section]:
             logging.info(line)
         print('\n')
+
+    """
+    Generate MICM species JSON from #Fixed section
+    """
+    fixed_species_json = parse_species(sections['#Fixed'], fixed=True)
+
+    """
+    Generate MICM species JSON from #Variable section
+    """
+    variable_species_json = parse_species(sections['#Variable'])
 
