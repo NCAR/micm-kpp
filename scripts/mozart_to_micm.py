@@ -99,10 +99,12 @@ def parse_species(lines, fixed=False, tolerance=1.0e-12):
             lhs, rhs = tuple(line.split('->'))
             logging.debug((lhs, rhs))
         else:
-            lhs = line
+            lhs, rhs = line, None
             logging.debug(lhs)
         species_dict = {'name': lhs.replace('{', '').replace('}', '').strip().lstrip(),
             'type': 'CHEM_SPEC'}
+        if rhs is not None:
+            species_dict['__formula'] = rhs.replace('{', '').replace('}', '').strip().lstrip()
         if fixed:
             species_dict['tracer type'] = 'CONSTANT'
         else:
