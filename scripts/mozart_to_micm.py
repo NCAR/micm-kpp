@@ -133,8 +133,14 @@ def parse_equations(lines):
         # split on reaction delimiter into left hand and right hand sides 
         if '->' in line:
             lhs, rhs = tuple(line.split('->'))
+
+            # extract reaction coefficients
+            rhs, coeffs = tuple(rhs.split(';'))
+            print(coeffs)
+
         else:
             lhs, rhs = line, None
+
         print('lhs', lhs)
         print('rhs', rhs)
         print()
