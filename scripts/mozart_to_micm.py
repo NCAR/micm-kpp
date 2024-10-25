@@ -133,9 +133,7 @@ def parse_equations(lines):
         if ']' in equation_set:
             label, equations = tuple(equation_set.split(']'))
             label = label.strip().lstrip()
-        else:
-            label = None
-        logging.debug(label)
+            logging.info('equation set ' + label)
 
 
 def parse_equation_set(lines):
