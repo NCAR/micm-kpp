@@ -168,9 +168,8 @@ def parse_equation_set(lines):
             lhs, rhs = None, line.strip().lstrip()
             rhs_combo += rhs
 
-    print('lhs', lhs)
-    print('rhs', rhs_combo)
-    print()
+    logging.info(('lhs', lhs))
+    logging.info(('rhs', rhs_combo))
 
 
 if __name__ == '__main__':
