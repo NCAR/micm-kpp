@@ -134,6 +134,8 @@ def parse_equations(lines):
             label, equations = tuple(equation_set.split(']'))
             label = label.strip().lstrip()
             logging.info('equation set ' + label)
+            lines = equations.split('\n')
+            parse_equation_set(lines)
 
 
 def parse_equation_set(lines):
@@ -149,6 +151,9 @@ def parse_equation_set(lines):
 
     equations = list() # list of dict
 
+    print(lines)
+
+    """
     for line in lines:
         logging.debug(line)
 
@@ -169,6 +174,7 @@ def parse_equation_set(lines):
         print('lhs', lhs)
         print('rhs', rhs)
         print()
+    """
 
 
 if __name__ == '__main__':
