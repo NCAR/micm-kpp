@@ -165,11 +165,21 @@ def parse_equation_set(lines):
                 coeffs = coeffs.replace(' ', '')
             rhs_combo += rhs
         else:
-            lhs, rhs = None, line.strip().lstrip()
+            lhs_none, rhs = None, line.strip().lstrip()
             rhs_combo += rhs
 
-    logging.info(('lhs', lhs))
-    logging.info(('rhs', rhs_combo))
+    logging.debug(('lhs', lhs))
+    logging.debug(('rhs', rhs_combo))
+
+    reactants = lhs.split('+')
+    products = rhs_combo.split('+')
+    # remove trailing and leading whitespace
+    reactants = [reactant.strip().lstrip().replace(' ', '') for reactant in reactants]
+    products = [product.strip().lstrip().replace(' ', '') for product in products]
+
+    logging.info(('reactants', reactants))
+    logging.info(('products', products))
+
 
 
 if __name__ == '__main__':
