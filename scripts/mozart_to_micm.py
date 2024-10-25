@@ -136,10 +136,10 @@ def parse_equations(lines):
             label = label.strip().lstrip()
             logging.info('equation set ' + label)
             lines = equations.split('____')[0:-1]
-            parse_equation_set(lines)
+            parse_equation_set(label, lines)
 
 
-def parse_equation_set(lines):
+def parse_equation_set(label, lines):
     """
     Generate MICM equation JSON
 
@@ -152,58 +152,71 @@ def parse_equation_set(lines):
 
     equations = list() # list of dict
 
-    rhs_combo = ''
-    coeffs = ''
+    line_sets = list()
 
+    idx = -1
     for line in lines:
         logging.debug(line)
-
-        # split on reaction delimiter into left hand and right hand sides 
         if '->' in line:
-            lhs, rhs = tuple(line.split('->'))
-            lhs, rhs = lhs.strip().lstrip(), rhs.strip().lstrip()
-            if ';' in rhs:
-                rhs, coeffs = tuple(rhs.split(';'))
-                rhs = rhs.strip().lstrip()
-                coeffs = coeffs.replace(' ', '')
+            line_sets.append(list())
+            idx += 1
+        line_sets[idx].append(line)
+
+    # print(line_sets)
+
+    for lines in line_sets:
+        rhs_combo = ''
+        coeffs = ''
+
+        for line in lines:
+            logging.debug(line)
+
+            # split on reaction delimiter into left hand and right hand sides 
+            if '->' in line:
+                lhs, rhs = tuple(line.split('->'))
+                lhs, rhs = lhs.strip().lstrip(), rhs.strip().lstrip()
+                if ';' in rhs:
+                    rhs, coeffs = tuple(rhs.split(';'))
+                    rhs = rhs.strip().lstrip()
+                    coeffs = coeffs.replace(' ', '')
+                else:
+                    coeffs = None
+                rhs_combo += rhs
             else:
-                coeffs = None
-            rhs_combo += rhs
-        else:
-            lhs_none, rhs = None, line.strip().lstrip()
-            rhs_combo += rhs
+                lhs_none, rhs = None, line.strip().lstrip()
+                rhs_combo += rhs
 
-    """
-    logging.debug(('lhs', lhs))
-    logging.debug(('rhs', rhs_combo))
+        logging.debug(('lhs', lhs))
+        logging.debug(('rhs', rhs_combo))
 
-    reactants = lhs.split('+')
-    products = rhs_combo.split('+')
-    # remove trailing and leading whitespace
-    reactants = [reactant.strip().lstrip().replace(' ', '') for reactant in reactants]
-    products = [product.strip().lstrip().replace(' ', '') for product in products]
+        reactants = lhs.split('+')
+        products = rhs_combo.split('+')
+        # remove trailing and leading whitespace
+        reactants = [reactant.strip().lstrip().replace(' ', '') for reactant in reactants]
+        products = [product.strip().lstrip().replace(' ', '') for product in products]
 
-    logging.info(('reactants', reactants))
-    logging.info(('products', products))
-    logging.info(('coefficients', coeffs))
+        logging.info(('reactants', reactants))
+        logging.info(('products', products))
+        logging.info(('coefficients', coeffs))
 
-    equation_dict = dict()
+        equation_dict = dict()
 
-    if 'hv' in lhs:
-        equation_dict['type'] = 'PHOTOLYSIS'
+        if 'hv' in lhs:
+            equation_dict['type'] = 'PHOTOLYSIS'
 
-    equation_dict['reactants'] = dict()
-    equation_dict['products'] = dict()
+        equation_dict['reactants'] = dict()
+        equation_dict['products'] = dict()
 
-    for reactant in reactants:
-        if 'hv' in reactant:
-            pass
-        else:
-            x, M = parse_term(reactant)
-            equation_dict['reactants'][M] = {'qty': x}
+        """
+        for reactant in reactants:
+            if 'hv' in reactant:
+                pass
+            else:
+                x, M = parse_term(reactant)
+                equation_dict['reactants'][M] = {'qty': x}
+        """
 
-    equations.append(equation_dict)
-    """
+        equations.append(equation_dict)
 
 
 if __name__ == '__main__':
