@@ -114,6 +114,29 @@ def parse_species(lines, fixed=False, tolerance=1.0e-12):
     return species_json
 
 
+def parse_equations(lines):
+    """
+    Generate MICM equation JSON
+
+    Parameters
+        (list of str) lines: lines of equation section
+
+    Returns
+        (list of dict): list of MICM equation entries
+    """
+
+    equations = list() # list of dict
+
+    for line in lines:
+        logging.debug(line)
+
+        # split on equal sign into left hand and right hand sides 
+        if '->' in line:
+            lhs, rhs = tuple(line.split('->'))
+        else:
+            lhs = line
+
+
 
 if __name__ == '__main__':
 
@@ -172,13 +195,20 @@ if __name__ == '__main__':
     variable_species_json = parse_species(sections['#Variable'])
 
     """
+    Generate MICM equaitons JSON from #Equations section
+    """
+    equations_json = parse_equations(sections['#Equations'])
+
+    """
     Assemble MICM species JSON
     """
     micm_species_json = {'camp-data': fixed_species_json + variable_species_json}
     micm_species_json_str = json.dumps(micm_species_json, indent=4)
+    """
     logging.info('____ MICM species ____')
     logging.info(micm_species_json_str)
     print('\n')
+    """
 
     """
     Write MICM JSON
