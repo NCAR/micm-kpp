@@ -19,6 +19,8 @@ import logging
 import json
 from glob import glob
 
+from parse_kpp_utils import is_float, parse_term
+
 __version__ = 'v1.00'
 
 
@@ -151,6 +153,7 @@ def parse_equation_set(lines):
     equations = list() # list of dict
 
     rhs_combo = ''
+    coeffs = ''
 
     for line in lines:
         logging.debug(line)
@@ -163,11 +166,14 @@ def parse_equation_set(lines):
                 rhs, coeffs = tuple(rhs.split(';'))
                 rhs = rhs.strip().lstrip()
                 coeffs = coeffs.replace(' ', '')
+            else:
+                coeffs = None
             rhs_combo += rhs
         else:
             lhs_none, rhs = None, line.strip().lstrip()
             rhs_combo += rhs
 
+    """
     logging.debug(('lhs', lhs))
     logging.debug(('rhs', rhs_combo))
 
@@ -179,7 +185,25 @@ def parse_equation_set(lines):
 
     logging.info(('reactants', reactants))
     logging.info(('products', products))
+    logging.info(('coefficients', coeffs))
 
+    equation_dict = dict()
+
+    if 'hv' in lhs:
+        equation_dict['type'] = 'PHOTOLYSIS'
+
+    equation_dict['reactants'] = dict()
+    equation_dict['products'] = dict()
+
+    for reactant in reactants:
+        if 'hv' in reactant:
+            pass
+        else:
+            x, M = parse_term(reactant)
+            equation_dict['reactants'][M] = {'qty': x}
+
+    equations.append(equation_dict)
+    """
 
 
 if __name__ == '__main__':
