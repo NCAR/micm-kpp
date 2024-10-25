@@ -135,8 +135,9 @@ def parse_equations(lines):
             lhs, rhs = tuple(line.split('->'))
 
             # extract reaction coefficients
-            rhs, coeffs = tuple(rhs.split(';'))
-            print(coeffs)
+            if ';' in rhs:
+                rhs, coeffs = tuple(rhs.split(';'))
+                print(coeffs)
 
         else:
             lhs, rhs = line, None
