@@ -130,12 +130,14 @@ def parse_equations(lines):
     for line in lines:
         logging.debug(line)
 
-        # split on equal sign into left hand and right hand sides 
+        # split on reaction delimiter into left hand and right hand sides 
         if '->' in line:
             lhs, rhs = tuple(line.split('->'))
         else:
-            lhs = line
-
+            lhs, rhs = line, None
+        print('lhs', lhs)
+        print('rhs', rhs)
+        print()
 
 
 if __name__ == '__main__':
