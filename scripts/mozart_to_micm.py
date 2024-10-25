@@ -125,16 +125,15 @@ def parse_equations(lines):
         (list of dict): list of MICM equation entries
     """
 
-    joined_lines = ''.join(lines)
+    joined_lines = '____'.join(lines)
     equation_sets = joined_lines.split('[')
 
     for equation_set in equation_sets:
-        logging.debug(equation_set)
         if ']' in equation_set:
             label, equations = tuple(equation_set.split(']'))
             label = label.strip().lstrip()
             logging.info('equation set ' + label)
-            lines = equations.split('\n')
+            lines = equations.split('____')[0:-1]
             parse_equation_set(lines)
 
 
@@ -151,11 +150,10 @@ def parse_equation_set(lines):
 
     equations = list() # list of dict
 
-    print(lines)
-
-    """
     for line in lines:
         logging.debug(line)
+
+    """
 
         # split on reaction delimiter into left hand and right hand sides 
         if '->' in line:
