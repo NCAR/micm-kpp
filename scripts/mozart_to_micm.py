@@ -133,14 +133,22 @@ def parse_equations(lines):
         # split on reaction delimiter into left hand and right hand sides 
         if '->' in line:
             lhs, rhs = tuple(line.split('->'))
-
-            # extract reaction coefficients
-            if ';' in rhs:
-                rhs, coeffs = tuple(rhs.split(';'))
-                print(coeffs)
-
+            lhs, rhs = lhs.strip().lstrip(), rhs.strip().lstrip()
         else:
-            lhs, rhs = line, None
+            lhs, rhs = line.strip().lstrip(), None
+
+        # extract equation label delimited by [ ]
+        if ']' in lhs:
+            label, lhs = tuple(lhs.split(']'))
+            label = label.lstrip('[')
+            print(label)
+
+        # extract reaction coefficients
+        if rhs is not None and ';' in rhs:
+            rhs, coeffs = tuple(rhs.split(';'))
+            rhs = rhs.strip().lstrip()
+            coeffs = coeffs.replace(' ', '')
+            print(coeffs)
 
         print('lhs', lhs)
         print('rhs', rhs)
