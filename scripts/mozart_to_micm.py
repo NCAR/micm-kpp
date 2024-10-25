@@ -150,29 +150,27 @@ def parse_equation_set(lines):
 
     equations = list() # list of dict
 
+    rhs_combo = ''
+
     for line in lines:
         logging.debug(line)
-
-    """
 
         # split on reaction delimiter into left hand and right hand sides 
         if '->' in line:
             lhs, rhs = tuple(line.split('->'))
             lhs, rhs = lhs.strip().lstrip(), rhs.strip().lstrip()
+            if ';' in rhs:
+                rhs, coeffs = tuple(rhs.split(';'))
+                rhs = rhs.strip().lstrip()
+                coeffs = coeffs.replace(' ', '')
+            rhs_combo += rhs
         else:
-            lhs, rhs = line.strip().lstrip(), None
+            lhs, rhs = None, line.strip().lstrip()
+            rhs_combo += rhs
 
-        # extract reaction coefficients
-        if rhs is not None and ';' in rhs:
-            rhs, coeffs = tuple(rhs.split(';'))
-            rhs = rhs.strip().lstrip()
-            coeffs = coeffs.replace(' ', '')
-            print(coeffs)
-
-        print('lhs', lhs)
-        print('rhs', rhs)
-        print()
-    """
+    print('lhs', lhs)
+    print('rhs', rhs_combo)
+    print()
 
 
 if __name__ == '__main__':
