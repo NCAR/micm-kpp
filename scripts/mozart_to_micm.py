@@ -127,16 +127,20 @@ def parse_equations(lines):
         (list of dict): list of MICM equation entries
     """
 
+    equations = list() # list of dict
+
     joined_lines = '____'.join(lines)
     equation_sets = joined_lines.split('[')
 
     for equation_set in equation_sets:
         if ']' in equation_set:
-            label, equations = tuple(equation_set.split(']'))
+            label, lines____ = tuple(equation_set.split(']'))
             label = label.strip().lstrip()
             logging.info('equation set ' + label)
-            lines = equations.split('____')[0:-1]
-            parse_equation_set(label, lines)
+            lines = lines____.split('____')[0:-1]
+            equations.append(parse_equation_set(label, lines))
+
+    return equations
 
 
 def parse_equation_set(label, lines):
@@ -207,16 +211,16 @@ def parse_equation_set(label, lines):
         equation_dict['reactants'] = dict()
         equation_dict['products'] = dict()
 
-        """
         for reactant in reactants:
             if 'hv' in reactant:
                 pass
             else:
                 x, M = parse_term(reactant)
                 equation_dict['reactants'][M] = {'qty': x}
-        """
 
         equations.append(equation_dict)
+
+    return equations
 
 
 if __name__ == '__main__':
