@@ -218,6 +218,10 @@ def parse_equation_set(label, lines):
                 x, M = parse_term(reactant)
                 equation_dict['reactants'][M] = {'qty': x}
 
+        for product in products:
+            x, M = parse_term(product.replace('*', ' '))
+            equation_dict['products'][M] = {'yield': x}
+
         equations.append(equation_dict)
 
     return equations
@@ -294,6 +298,16 @@ if __name__ == '__main__':
     print('\n')
 
     """
+    Assemble MICM reactions JSON
+    """
+    micm_reactions_json = {'camp-data':
+        [{'name': args.mechanism, 'type': 'MECHANISM', 'reactions': equations_json}]}
+    micm_reactions_json_str = json.dumps(micm_reactions_json, indent=4)
+    logging.info('____ MICM reactions ____')
+    logging.info(micm_reactions_json_str)
+    print('\n')
+
+    """
     Write MICM JSON
     """
     micm_mechanism_dir = os.path.join(args.micm_dir, args.mechanism)
@@ -303,4 +317,6 @@ if __name__ == '__main__':
         os.mkdir(micm_mechanism_dir)
     with open(os.path.join(micm_mechanism_dir, 'species.json'), 'w') as f:
         json.dump(micm_species_json, f, indent=4)
+    with open(os.path.join(micm_mechanism_dir, 'reactions.json'), 'w') as f:
+        json.dump(micm_reactions_json, f, indent=4)
 
