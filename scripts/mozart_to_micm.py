@@ -21,6 +21,7 @@ from glob import glob
 
 from parse_kpp_utils import is_float, parse_term
 
+
 __version__ = 'v1.00'
 
 
@@ -203,10 +204,23 @@ def parse_equation_set(label, lines):
         logging.info(('products', products))
         logging.info(('coefficients', coeffs))
 
+        N_reactants = len(reactants)
+        if coeffs is not None:
+            coeffs_list = coeffs.split(',')
+            N_coeffs = len(coeffs_list)
+        else:
+            coeffs_list = []
+            N_coeffs = 0
+
         equation_dict = dict()
 
         if 'hv' in lhs:
             equation_dict['type'] = 'PHOTOLYSIS'
+
+        if N_coeffs == 2:
+            equation_dict['type'] = 'ARRHENIUS'
+            equation_dict['A'] = float(coeffs_list[0])
+            equation_dict['C'] = - float(coeffs_list[1])
 
         equation_dict['reactants'] = dict()
         equation_dict['products'] = dict()
