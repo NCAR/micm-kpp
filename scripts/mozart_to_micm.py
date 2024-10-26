@@ -217,10 +217,19 @@ def parse_equation_set(label, lines):
         if 'hv' in lhs:
             equation_dict['type'] = 'PHOTOLYSIS'
 
+        # typical 2 parameter coefficient values
+        # 1e-12, 100 or -1000
+        # MICM    A exp(C / T)
+        # Mozart  A exp(- B / T) ?
+
         if N_coeffs == 2:
             equation_dict['type'] = 'ARRHENIUS'
             equation_dict['A'] = float(coeffs_list[0])
             equation_dict['C'] = - float(coeffs_list[1])
+
+        # typical 5 parameter coefficient values
+        # k0_A, ?, kinf_A, ?, Fc
+        # 1e-33, 1, 1e-12, -1, 0.6
 
         equation_dict['reactants'] = dict()
         equation_dict['products'] = dict()
