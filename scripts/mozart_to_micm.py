@@ -213,6 +213,7 @@ def parse_equation_set(label, lines):
             N_coeffs = 0
 
         equation_dict = dict()
+        equation_dict['MUSICA name'] = label
 
         if 'hv' in lhs:
             equation_dict['type'] = 'PHOTOLYSIS'
