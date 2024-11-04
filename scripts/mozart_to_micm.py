@@ -278,6 +278,8 @@ if __name__ == '__main__':
         help='mechanism name')
     parser.add_argument('--debug', action='store_true',
         help='set logging level to debug')
+    parser.add_argument('--show_json', action='store_true',
+        help='show JSON output')
     args = parser.parse_args()
 
     """
@@ -321,9 +323,10 @@ if __name__ == '__main__':
     """
     micm_species_json = {'camp-data': fixed_species_json + variable_species_json}
     micm_species_json_str = json.dumps(micm_species_json, indent=4)
-    logging.info('____ MICM species ____')
-    logging.info(micm_species_json_str)
-    print('\n')
+    if args.show_json:
+        logging.info('____ MICM species ____')
+        logging.info(micm_species_json_str)
+        print('\n')
 
     """
     Assemble MICM reactions JSON
@@ -331,9 +334,10 @@ if __name__ == '__main__':
     micm_reactions_json = {'camp-data':
         [{'name': args.mechanism, 'type': 'MECHANISM', 'reactions': equations_json}]}
     micm_reactions_json_str = json.dumps(micm_reactions_json, indent=4)
-    logging.info('____ MICM reactions ____')
-    logging.info(micm_reactions_json_str)
-    print('\n')
+    if args.show_json:
+       logging.info('____ MICM reactions ____')
+       logging.info(micm_reactions_json_str)
+       print('\n')
 
     """
     Write MICM JSON
