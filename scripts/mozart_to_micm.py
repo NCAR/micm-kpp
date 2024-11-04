@@ -222,6 +222,11 @@ def parse_equation_set(label, lines):
             equation_dict['type'] = 'PHOTOLYSIS'
         # MICM    A exp(C / T) (T / D)^B (1 + E p)
         # Mozart  A exp(B / T)
+        elif N_coeffs == 1:
+            equation_dict['type'] = 'ARRHENIUS'
+            equation_dict['A'] = float(coeffs_list[0])
+            equation_dict['B'] = 0
+            equation_dict['C'] = 0
         elif N_coeffs == 2:
             equation_dict['type'] = 'ARRHENIUS'
             equation_dict['A'] = float(coeffs_list[0])
