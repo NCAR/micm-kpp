@@ -217,14 +217,22 @@ def parse_equation_set(label, lines):
 
         if 'hv' in lhs:
             equation_dict['type'] = 'PHOTOLYSIS'
-        # MICM    A exp(C / T)
+        # MICM    A exp(C / T) (T / D)^B (1 + E p)
         # Mozart  A exp(B / T)
         elif N_coeffs == 2:
             equation_dict['type'] = 'ARRHENIUS'
             equation_dict['A'] = float(coeffs_list[0])
+            equation_dict['B'] = 0
             equation_dict['C'] = float(coeffs_list[1])
+        # MICM   k = A (T / 300)^B
+        # Mozart k = A (300 / T)^B
         elif N_coeffs == 5:
             equation_dict['type'] = 'TROE'
+            equation_dict['k0_A'] = float(coeffs_list[0])
+            equation_dict['k0_B'] = - float(coeffs_list[1])
+            equation_dict['kinf_A'] = float(coeffs_list[2])
+            equation_dict['kinf_B'] = - float(coeffs_list[3])
+            equation_dict['Fc'] = float(coeffs_list[4])
         else:
             equation_dict['type'] = 'UNKNOWN ' + label
 
