@@ -130,7 +130,7 @@ def parse_equations(lines):
 
     equations = list() # list of dict
 
-    joined_lines = '____'.join(lines)
+    joined_lines = '____'.join(lines) + '____'
     equation_sets = joined_lines.split('[')
 
     for equation_set in equation_sets:
@@ -154,6 +154,9 @@ def parse_equation_set(label, lines):
     Returns
         (list of dict): list of MICM equation entries
     """
+
+    logging.debug('parse_equation_set ' + label)
+    logging.debug('line count:' + str(len(lines)))
 
     equations = list() # list of dict
 
