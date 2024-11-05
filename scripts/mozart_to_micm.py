@@ -172,6 +172,8 @@ def parse_equation_set(label, lines):
 
     # print(line_sets)
 
+    eqn_number = 1
+
     for lines in line_sets:
         rhs_combo = ''
         coeffs = ''
@@ -216,7 +218,8 @@ def parse_equation_set(label, lines):
             N_coeffs = 0
 
         equation_dict = dict()
-        equation_dict['MUSICA name'] = label
+        equation_dict['MUSICA name'] = label + ' (' + str(eqn_number) + ')'
+        eqn_number += 1
 
         if 'hv' in lhs:
             equation_dict['type'] = 'PHOTOLYSIS'
