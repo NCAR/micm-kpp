@@ -245,7 +245,7 @@ def parse_equation_set(label, lines):
             equation_dict['kinf_B'] = - float(coeffs_list[3])
             equation_dict['Fc'] = float(coeffs_list[4])
         else:
-            equation_dict['type'] = 'UNKNOWN ' + label
+            equation_dict['type'] = 'UNKNOWN ' + equation_dict['MUSICA name']
 
         equation_dict['reactants'] = dict()
         equation_dict['products'] = dict()
