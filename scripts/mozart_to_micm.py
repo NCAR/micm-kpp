@@ -225,6 +225,9 @@ def parse_equation_set(label, lines):
             equation_dict['type'] = 'PHOTOLYSIS'
         # MICM    A exp(C / T) (T / D)^B (1 + E p)
         # Mozart  A exp(B / T)
+        elif N_coeffs == 1 and '' in products:
+            equation_dict['type'] = 'FIRST_ORDER_LOSS'
+            equation_dict['A'] = float(coeffs_list[0])
         elif N_coeffs == 1:
             equation_dict['type'] = 'ARRHENIUS'
             equation_dict['A'] = float(coeffs_list[0])
@@ -246,6 +249,8 @@ def parse_equation_set(label, lines):
             equation_dict['Fc'] = float(coeffs_list[4])
         else:
             equation_dict['type'] = 'UNKNOWN ' + equation_dict['MUSICA name']
+
+        logging.info(equation_dict['type'])
 
         equation_dict['reactants'] = dict()
         equation_dict['products'] = dict()
