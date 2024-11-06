@@ -254,12 +254,14 @@ def parse_equation_set(label, lines):
             if 'hv' in reactant:
                 pass
             else:
-                x, M = parse_term(reactant)
-                equation_dict['reactants'][M] = {'qty': x}
+                if len(reactant) > 0:
+                    x, M = parse_term(reactant)
+                    equation_dict['reactants'][M] = {'qty': x}
 
         for product in products:
-            x, M = parse_term(product.replace('*', ' '))
-            equation_dict['products'][M] = {'yield': x}
+            if len(product) > 0:
+                x, M = parse_term(product.replace('*', ' '))
+                equation_dict['products'][M] = {'yield': x}
 
         equations.append(equation_dict)
 
