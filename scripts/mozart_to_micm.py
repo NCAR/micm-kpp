@@ -17,6 +17,7 @@ import sys
 import argparse
 import logging
 import json
+import yaml
 from glob import glob
 
 from parse_kpp_utils import is_float, parse_term
@@ -341,10 +342,12 @@ if __name__ == '__main__':
     """
     micm_species_json = {'camp-data': fixed_species_json + variable_species_json}
     micm_species_json_str = json.dumps(micm_species_json, indent=4)
+    micm_species_yaml = yaml.dump(json.loads(micm_species_json_str))
     if args.show_json:
         logging.info('____ MICM species ____')
         logging.info(micm_species_json_str)
         print('\n')
+    logging.info(micm_species_yaml)
 
     """
     Assemble MICM reactions JSON
@@ -352,10 +355,12 @@ if __name__ == '__main__':
     micm_reactions_json = {'camp-data':
         [{'name': args.mechanism, 'type': 'MECHANISM', 'reactions': equations_json}]}
     micm_reactions_json_str = json.dumps(micm_reactions_json, indent=4)
+    micm_reactions_yaml = yaml.dump(json.loads(micm_reactions_json_str))
     if args.show_json:
        logging.info('____ MICM reactions ____')
        logging.info(micm_reactions_json_str)
        print('\n')
+    logging.info(micm_reactions_yaml)
 
     """
     Write MICM JSON
@@ -369,4 +374,8 @@ if __name__ == '__main__':
         json.dump(micm_species_json, f, indent=4)
     with open(os.path.join(micm_mechanism_dir, 'reactions.json'), 'w') as f:
         json.dump(micm_reactions_json, f, indent=4)
+    with open(os.path.join(micm_mechanism_dir, 'species.yaml'), 'w') as f:
+        yaml.dump(micm_species_yaml, f, indent=4, default_flow_style=False, allow_unicode=True)
+    with open(os.path.join(micm_mechanism_dir, 'reactions.yaml'), 'w') as f:
+        yaml.dump(micm_reactions_yaml, f, indent=4, default_flow_style=False, allow_unicode=True)
 
