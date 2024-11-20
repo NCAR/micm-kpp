@@ -26,6 +26,9 @@ from parse_kpp_utils import is_float, parse_term
 __version__ = 'v1.00'
 
 
+unknowns = list()
+
+
 def read_mozart_config(config_dir, config_name):
     """
     Read all Mozart config files in a directory
@@ -272,7 +275,7 @@ def parse_equation_set(label, lines):
                 equation_dict['products'][M] = {'yield': x}
 
         if 'UNKNOWN' in equation_dict['type']:
-            pass
+            unknowns.append(equation_dict['type'])
         else:
             equations.append(equation_dict)
 
@@ -383,4 +386,11 @@ if __name__ == '__main__':
         yaml.dump(micm_species_yaml, f, indent=4, default_flow_style=False, allow_unicode=True)
     with open(os.path.join(micm_mechanism_dir, 'reactions.yaml'), 'w') as f:
         yaml.dump(micm_reactions_yaml, f, indent=4, default_flow_style=False, allow_unicode=True)
+
+    """
+    Write unknown equation labels
+    """
+    with open(os.path.join(micm_mechanism_dir, 'unknowns.txt'), 'w') as f:
+        for line in unknowns:
+            f.write(line + "\n")
 
