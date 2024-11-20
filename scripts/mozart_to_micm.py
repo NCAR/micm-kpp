@@ -140,7 +140,9 @@ def parse_equations(lines):
             label = label.strip().lstrip()
             logging.info('equation set ' + label)
             lines = lines____.split('____')[0:-1]
-            equations.append(parse_equation_set(label, lines))
+            parse_result = parse_equation_set(label, lines)
+            if len(parse_result) > 0:
+                equations.append(parse_result)
 
     return equations
 
@@ -269,7 +271,10 @@ def parse_equation_set(label, lines):
                 x, M = parse_term(product.replace('*', ' '))
                 equation_dict['products'][M] = {'yield': x}
 
-        equations.append(equation_dict)
+        if 'UNKNOWN' in equation_dict['type']:
+            pass
+        else:
+            equations.append(equation_dict)
 
     return equations
 
@@ -347,7 +352,7 @@ if __name__ == '__main__':
         logging.info('____ MICM species ____')
         logging.info(micm_species_json_str)
         print('\n')
-    logging.info(micm_species_yaml)
+    # logging.info(micm_species_yaml)
 
     """
     Assemble MICM reactions JSON
@@ -360,7 +365,7 @@ if __name__ == '__main__':
        logging.info('____ MICM reactions ____')
        logging.info(micm_reactions_json_str)
        print('\n')
-    logging.info(micm_reactions_yaml)
+    # logging.info(micm_reactions_yaml)
 
     """
     Write MICM JSON
